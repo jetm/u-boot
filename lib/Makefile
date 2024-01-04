@@ -95,6 +95,7 @@ obj-$(CONFIG_$(SPL_TPL_)OF_LIBFDT) += libfdt/
 obj-$(CONFIG_$(SPL_TPL_)OF_REAL) += fdtdec_common.o fdtdec.o
 
 obj-$(CONFIG_NET_LWIP) += lwip/
+obj-$(CONFIG_MBEDTLS_LIB) += mbedtls/
 
 ifdef CONFIG_SPL_BUILD
 obj-$(CONFIG_SPL_YMODEM_SUPPORT) += crc16-ccitt.o
