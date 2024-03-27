@@ -12,11 +12,15 @@
 #include "http_client.h"
 #include <net/ulwip.h>
 
+#include <lwip/opt.h>
+#include <lwip/apps/altcp_tls_mbedtls_opts.h>
+
 static ulong daddr;
 static httpc_connection_t settings;
 
 #define SERVER_NAME_SIZE 200
 #define HTTP_PORT_DEFAULT 80
+#define HTTPS_PORT_DEFAULT 443
 
 static err_t httpc_recv(void *arg, struct altcp_pcb *pcb, struct pbuf *pbuf,
 			err_t unused_err)
@@ -46,7 +50,7 @@ static void httpc_result(void *arg, httpc_result_t httpc_result, u32_t rx_conten
 		env_set_hex("filesize", rx_content_len);
 		ulwip_exit(0);
 	} else {
-		log_err("\nhttp eroror: %d\n", httpc_result);
+		log_err("\nhttp error: %d\n", httpc_result);
 		ulwip_exit(-1);
 	}
 }
@@ -56,12 +60,18 @@ static int parse_url(char *url, char *host, u16 *port, char **path)
 {
 	char *p, *pp;
 	long lport;
+    bool https;
 
-	p = strstr(url, "http://");
-	if (!p)
-		return -ENOENT;
-
-	p += strlen("http://");
+	p = strstr(url, "https://");
+    if (!p) {
+        p = strstr(url, "http://");
+        p += strlen("http://");
+        if (!p)
+            return -ENOENT;
+    } else {
+        p += strlen("https://");
+        https = true;
+    }
 
 	/* parse hostname */
 	pp = strchr(p, ':');
@@ -85,9 +95,12 @@ static int parse_url(char *url, char *host, u16 *port, char **path)
 		if (lport > 65535)
 			return -ENOENT;
 		*port = (u16)lport;
+    } else if (https) {
+        *port = HTTPS_PORT_DEFAULT;
 	} else {
 		*port = HTTP_PORT_DEFAULT;
 	}
+
 	if (*pp != '/')
 		return -ENOENT;
 	*path = pp;
