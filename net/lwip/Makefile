@@ -2,6 +2,10 @@
 #
 # (C) Copyright 2023 Linaro Ltd. <maxim.uvarov@linaro.org>
 
+ccflags-$(CONFIG_MBEDTLS_LIB_TLS) += -I$(srctree)/lib/mbedtls \
+	-I$(srctree)/lib/mbedtls/port \
+	-I$(srctree)/lib/mbedtls/external/mbedtls/include
+
 ccflags-y += -I$(srctree)/net/lwip/port/include
 ccflags-y += -I$(srctree)/net/lwip/lwip-external/src/include -I$(srctree)/net/lwip
 
