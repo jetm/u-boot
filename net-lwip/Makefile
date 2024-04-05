@@ -5,6 +5,7 @@ obj-$(CONFIG_$(SPL_)DM_ETH) += eth_common.o
 obj-$(CONFIG_$(SPL_)DM_ETH) += eth-uclass.o
 obj-$(CONFIG_$(SPL_)DM_ETH) += net-lwip.o
 obj-$(CONFIG_CMD_DHCP_LWIP) += dhcp.o
+obj-$(CONFIG_CMD_PING_LWIP) += ping.o
 obj-$(CONFIG_CMD_TFTPBOOT_LWIP) += tftp.o
 
 # Disable this warning as it is triggered by:
