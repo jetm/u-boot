@@ -5,7 +5,11 @@
  *  SPDX-License-Identifier: Apache-2.0 OR GPL-2.0-or-later
  */
 
-#include "mbedtls/build_info.h"
+#if !defined(MBEDTLS_CONFIG_FILE)
+#include "mbedtls/config.h"
+#else
+#include MBEDTLS_CONFIG_FILE
+#endif
 
 #include "mbedtls/platform.h"
 
@@ -168,9 +172,7 @@ int main(int argc, char *argv[])
     char buf[1024];
     int i;
     char *p, *q;
-#if defined(MBEDTLS_RSA_C)
     mbedtls_mpi N, P, Q, D, E, DP, DQ, QP;
-#endif /* MBEDTLS_RSA_C */
     mbedtls_entropy_context entropy;
     mbedtls_ctr_drbg_context ctr_drbg;
     const char *pers = "gen_key";
@@ -181,12 +183,12 @@ int main(int argc, char *argv[])
     /*
      * Set to sane values
      */
-#if defined(MBEDTLS_RSA_C)
+
     mbedtls_mpi_init(&N); mbedtls_mpi_init(&P); mbedtls_mpi_init(&Q);
     mbedtls_mpi_init(&D); mbedtls_mpi_init(&E); mbedtls_mpi_init(&DP);
     mbedtls_mpi_init(&DQ); mbedtls_mpi_init(&QP);
-#endif /* MBEDTLS_RSA_C */
 
+    mbedtls_entropy_init(&entropy);
     mbedtls_pk_init(&key);
     mbedtls_ctr_drbg_init(&ctr_drbg);
     memset(buf, 0, sizeof(buf));
@@ -274,7 +276,6 @@ usage:
     mbedtls_printf("\n  . Seeding the random number generator...");
     fflush(stdout);
 
-    mbedtls_entropy_init(&entropy);
 #if !defined(_WIN32) && defined(MBEDTLS_FS_IO)
     if (opt.use_dev_random) {
         if ((ret = mbedtls_entropy_add_source(&entropy, dev_random_entropy_poll,
@@ -367,10 +368,10 @@ usage:
     if (mbedtls_pk_get_type(&key) == MBEDTLS_PK_ECKEY) {
         mbedtls_ecp_keypair *ecp = mbedtls_pk_ec(key);
         mbedtls_printf("curve: %s\n",
-                       mbedtls_ecp_curve_info_from_grp_id(ecp->MBEDTLS_PRIVATE(grp).id)->name);
-        mbedtls_mpi_write_file("X_Q:   ", &ecp->MBEDTLS_PRIVATE(Q).MBEDTLS_PRIVATE(X), 16, NULL);
-        mbedtls_mpi_write_file("Y_Q:   ", &ecp->MBEDTLS_PRIVATE(Q).MBEDTLS_PRIVATE(Y), 16, NULL);
-        mbedtls_mpi_write_file("D:     ", &ecp->MBEDTLS_PRIVATE(d), 16, NULL);
+                       mbedtls_ecp_curve_info_from_grp_id(ecp->grp.id)->name);
+        mbedtls_mpi_write_file("X_Q:   ", &ecp->Q.X, 16, NULL);
+        mbedtls_mpi_write_file("Y_Q:   ", &ecp->Q.Y, 16, NULL);
+        mbedtls_mpi_write_file("D:     ", &ecp->d, 16, NULL);
     } else
 #endif
     mbedtls_printf("  ! key type not supported\n");
@@ -400,11 +401,9 @@ exit:
 #endif
     }
 
-#if defined(MBEDTLS_RSA_C)
     mbedtls_mpi_free(&N); mbedtls_mpi_free(&P); mbedtls_mpi_free(&Q);
     mbedtls_mpi_free(&D); mbedtls_mpi_free(&E); mbedtls_mpi_free(&DP);
     mbedtls_mpi_free(&DQ); mbedtls_mpi_free(&QP);
-#endif /* MBEDTLS_RSA_C */
 
     mbedtls_pk_free(&key);
     mbedtls_ctr_drbg_free(&ctr_drbg);
@@ -412,6 +411,11 @@ exit:
 #if defined(MBEDTLS_USE_PSA_CRYPTO)
     mbedtls_psa_crypto_free();
 #endif /* MBEDTLS_USE_PSA_CRYPTO */
+
+#if defined(_WIN32)
+    mbedtls_printf("  + Press Enter to exit this program.\n");
+    fflush(stdout); getchar();
+#endif
 
     mbedtls_exit(exit_code);
 }

@@ -51,7 +51,7 @@ static int hash_init_sha1(struct hash_algo *algo, void **ctxp)
 	mbedtls_sha1_context *ctx = malloc(sizeof(mbedtls_sha1_context));
 
 	mbedtls_sha1_init(ctx);
-	ret = mbedtls_sha1_starts(ctx);
+	ret = mbedtls_sha1_starts_ret(ctx);
 	if (!ret) {
 		*ctxp = ctx;
 	} else {
@@ -65,7 +65,7 @@ static int hash_init_sha1(struct hash_algo *algo, void **ctxp)
 static int hash_update_sha1(struct hash_algo *algo, void *ctx, const void *buf,
 			    unsigned int size, int is_last)
 {
-	return mbedtls_sha1_update((mbedtls_sha1_context *)ctx, buf, size);
+	return mbedtls_sha1_update_ret((mbedtls_sha1_context *)ctx, buf, size);
 }
 
 static int
@@ -76,7 +76,7 @@ hash_finish_sha1(struct hash_algo *algo, void *ctx, void *dest_buf, int size)
 	if (size < algo->digest_size)
 		return -1;
 
-	ret = mbedtls_sha1_finish((mbedtls_sha1_context *)ctx, dest_buf);
+	ret = mbedtls_sha1_finish_ret((mbedtls_sha1_context *)ctx, dest_buf);
 	if (!ret) {
 		mbedtls_sha1_free((mbedtls_sha1_context *)ctx);
 		free(ctx);
@@ -92,7 +92,7 @@ static int hash_init_sha256(struct hash_algo *algo, void **ctxp)
 	mbedtls_sha256_context *ctx = malloc(sizeof(mbedtls_sha256_context));
 
 	mbedtls_sha256_init(ctx);
-	ret = mbedtls_sha256_starts(ctx, is224);
+	ret = mbedtls_sha256_starts_ret(ctx, is224);
 	if (!ret) {
 		*ctxp = ctx;
 	} else {
@@ -106,7 +106,7 @@ static int hash_init_sha256(struct hash_algo *algo, void **ctxp)
 static int hash_update_sha256(struct hash_algo *algo, void *ctx, const void *buf,
 			      uint size, int is_last)
 {
-	return mbedtls_sha256_update((mbedtls_sha256_context *)ctx, buf, size);
+	return mbedtls_sha256_update_ret((mbedtls_sha256_context *)ctx, buf, size);
 }
 
 static int
@@ -117,7 +117,7 @@ hash_finish_sha256(struct hash_algo *algo, void *ctx, void *dest_buf, int size)
 	if (size < algo->digest_size)
 		return -1;
 
-	ret = mbedtls_sha256_finish((mbedtls_sha256_context *)ctx, dest_buf);
+	ret = mbedtls_sha256_finish_ret((mbedtls_sha256_context *)ctx, dest_buf);
 	if (!ret) {
 		mbedtls_sha256_free((mbedtls_sha256_context *)ctx);
 		free(ctx);
@@ -133,7 +133,7 @@ static int hash_init_sha512(struct hash_algo *algo, void **ctxp)
 	mbedtls_sha512_context *ctx = malloc(sizeof(mbedtls_sha512_context));
 
 	mbedtls_sha512_init(ctx);
-	ret = mbedtls_sha512_starts(ctx, is384);
+	ret = mbedtls_sha512_starts_ret(ctx, is384);
 	if (!ret) {
 		*ctxp = ctx;
 	} else {
@@ -147,7 +147,7 @@ static int hash_init_sha512(struct hash_algo *algo, void **ctxp)
 static int hash_update_sha512(struct hash_algo *algo, void *ctx, const void *buf,
 			      uint size, int is_last)
 {
-	return mbedtls_sha512_update((mbedtls_sha512_context *)ctx, buf, size);
+	return mbedtls_sha512_update_ret((mbedtls_sha512_context *)ctx, buf, size);
 }
 
 static int
@@ -158,7 +158,7 @@ hash_finish_sha512(struct hash_algo *algo, void *ctx, void *dest_buf, int size)
 	if (size < algo->digest_size)
 		return -1;
 
-	ret = mbedtls_sha512_finish((mbedtls_sha512_context *)ctx, dest_buf);
+	ret = mbedtls_sha512_finish_ret((mbedtls_sha512_context *)ctx, dest_buf);
 	if (!ret) {
 		mbedtls_sha512_free((mbedtls_sha512_context *)ctx);
 		free(ctx);

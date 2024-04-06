@@ -31,15 +31,13 @@ static void ctr_drbg_validate_internal(int reseed_mode, data_t *nonce,
                                        data_t *result)
 {
     mbedtls_ctr_drbg_context ctx;
+    mbedtls_ctr_drbg_init(&ctx);
     unsigned char buf[64];
 
     size_t entropy_chunk_len = (size_t) entropy_len_arg;
-
     TEST_ASSERT(entropy_chunk_len <= sizeof(buf));
 
     test_offset_idx = 0;
-    mbedtls_ctr_drbg_init(&ctx);
-
     test_max_idx = entropy->len;
 
     /* CTR_DRBG_Instantiate(entropy[:entropy->len], nonce, perso, <ignored>)
@@ -287,7 +285,7 @@ void ctr_drbg_entropy_usage(int entropy_nonce_len)
     /* Call update with too much data (sizeof(entropy) > MAX(_SEED)_INPUT).
      * Make sure it's detected as an error and doesn't cause memory
      * corruption. */
-    TEST_ASSERT(mbedtls_ctr_drbg_update(
+    TEST_ASSERT(mbedtls_ctr_drbg_update_ret(
                     &ctx, entropy, sizeof(entropy)) != 0);
 
     /* Now enable PR, so the next few calls should all reseed */

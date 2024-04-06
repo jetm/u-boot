@@ -23,7 +23,6 @@ from mbedtls_dev import test_case
 from mbedtls_dev import test_data_generation
 
 
-
 def test_case_for_key_type_not_supported(
         verb: str, key_type: str, bits: int,
         dependencies: List[str],
@@ -54,10 +53,7 @@ class KeyTypeNotSupported:
 
     ALWAYS_SUPPORTED = frozenset([
         'PSA_KEY_TYPE_DERIVE',
-        'PSA_KEY_TYPE_PASSWORD',
-        'PSA_KEY_TYPE_PASSWORD_HASH',
         'PSA_KEY_TYPE_RAW_DATA',
-        'PSA_KEY_TYPE_HMAC'
     ])
     def test_cases_for_key_type_not_supported(
             self,
@@ -84,10 +80,7 @@ class KeyTypeNotSupported:
         if kt.name.endswith('_PUBLIC_KEY'):
             generate_dependencies = []
         else:
-            generate_dependencies = \
-                psa_information.fix_key_pair_dependencies(import_dependencies, 'GENERATE')
-            import_dependencies = \
-                psa_information.fix_key_pair_dependencies(import_dependencies, 'BASIC')
+            generate_dependencies = import_dependencies
         for bits in kt.sizes_to_test():
             yield test_case_for_key_type_not_supported(
                 'import', kt.expression, bits,
@@ -113,15 +106,11 @@ class KeyTypeNotSupported:
 
     ECC_KEY_TYPES = ('PSA_KEY_TYPE_ECC_KEY_PAIR',
                      'PSA_KEY_TYPE_ECC_PUBLIC_KEY')
-    DH_KEY_TYPES = ('PSA_KEY_TYPE_DH_KEY_PAIR',
-                    'PSA_KEY_TYPE_DH_PUBLIC_KEY')
 
     def test_cases_for_not_supported(self) -> Iterator[test_case.TestCase]:
         """Generate test cases that exercise the creation of keys of unsupported types."""
         for key_type in sorted(self.constructors.key_types):
             if key_type in self.ECC_KEY_TYPES:
-                continue
-            if key_type in self.DH_KEY_TYPES:
                 continue
             kt = crypto_knowledge.KeyType(key_type)
             yield from self.test_cases_for_key_type_not_supported(kt)
@@ -132,13 +121,6 @@ class KeyTypeNotSupported:
                     kt, param_descr='type')
                 yield from self.test_cases_for_key_type_not_supported(
                     kt, 0, param_descr='curve')
-        for dh_family in sorted(self.constructors.dh_groups):
-            for constr in self.DH_KEY_TYPES:
-                kt = crypto_knowledge.KeyType(constr, [dh_family])
-                yield from self.test_cases_for_key_type_not_supported(
-                    kt, param_descr='type')
-                yield from self.test_cases_for_key_type_not_supported(
-                    kt, 0, param_descr='group')
 
 def test_case_for_key_generation(
         key_type: str, bits: int,
@@ -167,8 +149,6 @@ class KeyGenerate:
 
     ECC_KEY_TYPES = ('PSA_KEY_TYPE_ECC_KEY_PAIR',
                      'PSA_KEY_TYPE_ECC_PUBLIC_KEY')
-    DH_KEY_TYPES = ('PSA_KEY_TYPE_DH_KEY_PAIR',
-                    'PSA_KEY_TYPE_DH_PUBLIC_KEY')
 
     @staticmethod
     def test_cases_for_key_type_key_generation(
@@ -192,17 +172,13 @@ class KeyGenerate:
             generate_dependencies = []
             result = 'PSA_ERROR_INVALID_ARGUMENT'
         else:
-            generate_dependencies = \
-                psa_information.fix_key_pair_dependencies(import_dependencies, 'GENERATE')
-        for bits in kt.sizes_to_test():
+            generate_dependencies = import_dependencies
             if kt.name == 'PSA_KEY_TYPE_RSA_KEY_PAIR':
-                size_dependency = "PSA_VENDOR_RSA_GENERATE_MIN_KEY_BITS <= " +  str(bits)
-                test_dependencies = generate_dependencies + [size_dependency]
-            else:
-                test_dependencies = generate_dependencies
+                generate_dependencies.append("MBEDTLS_GENPRIME")
+        for bits in kt.sizes_to_test():
             yield test_case_for_key_generation(
                 kt.expression, bits,
-                psa_information.finish_family_dependencies(test_dependencies, bits),
+                psa_information.finish_family_dependencies(generate_dependencies, bits),
                 str(bits),
                 result
             )
@@ -212,17 +188,11 @@ class KeyGenerate:
         for key_type in sorted(self.constructors.key_types):
             if key_type in self.ECC_KEY_TYPES:
                 continue
-            if key_type in self.DH_KEY_TYPES:
-                continue
             kt = crypto_knowledge.KeyType(key_type)
             yield from self.test_cases_for_key_type_key_generation(kt)
         for curve_family in sorted(self.constructors.ecc_curves):
             for constr in self.ECC_KEY_TYPES:
                 kt = crypto_knowledge.KeyType(constr, [curve_family])
-                yield from self.test_cases_for_key_type_key_generation(kt)
-        for dh_family in sorted(self.constructors.dh_groups):
-            for constr in self.DH_KEY_TYPES:
-                kt = crypto_knowledge.KeyType(constr, [dh_family])
                 yield from self.test_cases_for_key_type_key_generation(kt)
 
 class OpFail:
@@ -273,7 +243,6 @@ class OpFail:
                                    pretty_reason,
                                    ' with ' + pretty_type if pretty_type else ''))
         dependencies = psa_information.automatic_dependencies(alg.base_expression, key_type)
-        dependencies = psa_information.fix_key_pair_dependencies(dependencies, 'BASIC')
         for i, dep in enumerate(dependencies):
             if dep in not_deps:
                 dependencies[i] = '!' + dep
@@ -407,7 +376,7 @@ class StorageTestData(StorageKey):
     ) -> None:
         """Prepare to generate test data
 
-        * `description`   : used for the test case names
+        * `description`   : used for the the test case names
         * `expected_usage`: the usage flags generated as the expected usage flags
                             in the test cases. CAn differ from the usage flags
                             stored in the keys because of the usage flags extension.
@@ -427,7 +396,7 @@ class StorageFormat:
     def __init__(self, info: psa_information.Information, version: int, forward: bool) -> None:
         """Prepare to generate test cases for storage format stability.
 
-        * `info`: information about the API. See the `Information` class.
+        * `info`: information about the API. See the `psa_information.Information` class.
         * `version`: the storage format version to generate test cases for.
         * `forward`: if true, generate forward compatibility test cases which
           save a key and check that its representation is as intended. Otherwise
@@ -460,6 +429,9 @@ class StorageFormat:
         # Raw data keys have no useful exercise anyway so there is no
         # loss of test coverage.
         if key_type.string == 'PSA_KEY_TYPE_RAW_DATA':
+            return False
+        # Mbed TLS only supports 128-bit keys for RC4.
+        if key_type.string == 'PSA_KEY_TYPE_ARC4' and bits != 128:
             return False
         # OAEP requires room for two hashes plus wrapping
         m = cls.RSA_OAEP_RE.match(alg.string)
@@ -496,8 +468,6 @@ class StorageFormat:
             key.alg.string, key.alg2.string,
         )
         dependencies = psa_information.finish_family_dependencies(dependencies, key.bits)
-        dependencies += psa_information.generate_key_dependencies(key.description)
-        dependencies = psa_information.fix_key_pair_dependencies(dependencies, 'BASIC')
         tc.set_dependencies(dependencies)
         tc.set_function('key_storage_' + verb)
         if self.forward:

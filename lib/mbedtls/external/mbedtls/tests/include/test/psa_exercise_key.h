@@ -20,9 +20,13 @@
  *
  * This is used in some smoke tests.
  */
-#if defined(PSA_WANT_ALG_MD5)
+#if defined(PSA_WANT_ALG_MD2)
+#define KNOWN_SUPPORTED_HASH_ALG PSA_ALG_MD2
+#elif defined(PSA_WANT_ALG_MD4)
+#define KNOWN_SUPPORTED_HASH_ALG PSA_ALG_MD4
+#elif defined(PSA_WANT_ALG_MD5)
 #define KNOWN_SUPPORTED_HASH_ALG PSA_ALG_MD5
-/* PSA_WANT_ALG_RIPEMD160 omitted. This is necessary for the sake of
+/* MBEDTLS_RIPEMD160_C omitted. This is necessary for the sake of
  * exercise_signature_key() because Mbed TLS doesn't support RIPEMD160
  * in RSA PKCS#1v1.5 signatures. A RIPEMD160-only configuration would be
  * implausible anyway. */
@@ -38,6 +42,34 @@
 #define KNOWN_SUPPORTED_HASH_ALG PSA_ALG_SHA3_256
 #else
 #undef KNOWN_SUPPORTED_HASH_ALG
+#endif
+
+/** \def KNOWN_MBEDTLS_SUPPORTED_HASH_ALG
+ *
+ * A hash algorithm that is known to be supported by Mbed TLS APIs.
+ *
+ * This is used in some smoke tests where the hash algorithm is used as
+ * part of another algorithm like a signature algorithm and the hashing is
+ * completed through an Mbed TLS hash API, not the PSA one.
+ */
+#if defined(MBEDTLS_MD2_C)
+#define KNOWN_MBEDTLS_SUPPORTED_HASH_ALG PSA_ALG_MD2
+#elif defined(MBEDTLS_MD4_C)
+#define KNOWN_MBEDTLS_SUPPORTED_HASH_ALG PSA_ALG_MD4
+#elif defined(MBEDTLS_MD5_C)
+#define KNOWN_MBEDTLS_SUPPORTED_HASH_ALG PSA_ALG_MD5
+/* MBEDTLS_RIPEMD160_C omitted. This is necessary for the sake of
+ * exercise_signature_key() because Mbed TLS doesn't support RIPEMD160
+ * in RSA PKCS#1v1.5 signatures. A RIPEMD160-only configuration would be
+ * implausible anyway. */
+#elif defined(MBEDTLS_SHA1_C)
+#define KNOWN_MBEDTLS_SUPPORTED_HASH_ALG PSA_ALG_SHA_1
+#elif defined(MBEDTLS_SHA256_C)
+#define KNOWN_MBEDTLS_SUPPORTED_HASH_ALG PSA_ALG_SHA_256
+#elif defined(MBEDTLS_SHA512_C)
+#define KNOWN_MBEDTLS_SUPPORTED_HASH_ALG PSA_ALG_SHA_512
+#else
+#undef KNOWN_MBEDTLS_SUPPORTED_HASH_ALG
 #endif
 
 /** \def KNOWN_SUPPORTED_BLOCK_CIPHER
@@ -95,6 +127,9 @@
 #if defined(KNOWN_SUPPORTED_BLOCK_CIPHER_ALG)
 #define KNOWN_SUPPORTED_CIPHER_ALG KNOWN_SUPPORTED_BLOCK_CIPHER_ALG
 #define KNOWN_SUPPORTED_CIPHER_KEY_TYPE KNOWN_SUPPORTED_BLOCK_CIPHER
+#elif defined(MBEDTLS_RC4_C)
+#define KNOWN_SUPPORTED_CIPHER_ALG PSA_ALG_RC4
+#define KNOWN_SUPPORTED_CIPHER_KEY_TYPE PSA_KEY_TYPE_RC4
 #else
 #undef KNOWN_SUPPORTED_CIPHER_ALG
 #undef KNOWN_SUPPORTED_CIPHER_KEY_TYPE
@@ -107,7 +142,6 @@
  * The inputs \p input1 and \p input2 are, in order:
  * - HKDF: salt, info.
  * - TKS 1.2 PRF, TLS 1.2 PSK-to-MS: seed, label.
- * - PBKDF2: input cost, salt.
  *
  * \param operation         The operation object to use.
  *                          It must be in the initialized state.

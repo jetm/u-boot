@@ -283,8 +283,7 @@ static int exercise_signature_key(mbedtls_svc_key_id_t key,
                                   psa_key_usage_t usage,
                                   psa_algorithm_t alg)
 {
-    if (usage & (PSA_KEY_USAGE_SIGN_HASH | PSA_KEY_USAGE_VERIFY_HASH) &&
-        PSA_ALG_IS_SIGN_HASH(alg)) {
+    if (usage & (PSA_KEY_USAGE_SIGN_HASH | PSA_KEY_USAGE_VERIFY_HASH)) {
         unsigned char payload[PSA_HASH_MAX_SIZE] = { 1 };
         size_t payload_length = 16;
         unsigned char signature[PSA_SIGNATURE_MAX_SIZE] = { 0 };
@@ -293,8 +292,8 @@ static int exercise_signature_key(mbedtls_svc_key_id_t key,
 
         /* If the policy allows signing with any hash, just pick one. */
         if (PSA_ALG_IS_SIGN_HASH(alg) && hash_alg == PSA_ALG_ANY_HASH) {
-    #if defined(KNOWN_SUPPORTED_HASH_ALG)
-            hash_alg = KNOWN_SUPPORTED_HASH_ALG;
+    #if defined(KNOWN_MBEDTLS_SUPPORTED_HASH_ALG)
+            hash_alg = KNOWN_MBEDTLS_SUPPORTED_HASH_ALG;
             alg ^= PSA_ALG_ANY_HASH ^ hash_alg;
     #else
             TEST_FAIL("No hash algorithm for hash-and-sign testing");
@@ -425,17 +424,6 @@ int mbedtls_test_psa_setup_key_derivation_wrap(
         PSA_ASSERT(psa_key_derivation_input_bytes(operation,
                                                   PSA_KEY_DERIVATION_INPUT_LABEL,
                                                   input2, input2_length));
-    } else if (PSA_ALG_IS_PBKDF2(alg)) {
-        PSA_ASSERT(psa_key_derivation_input_integer(operation,
-                                                    PSA_KEY_DERIVATION_INPUT_COST,
-                                                    1U));
-        PSA_ASSERT(psa_key_derivation_input_bytes(operation,
-                                                  PSA_KEY_DERIVATION_INPUT_SALT,
-                                                  input2,
-                                                  input2_length));
-        PSA_ASSERT(psa_key_derivation_input_key(operation,
-                                                PSA_KEY_DERIVATION_INPUT_PASSWORD,
-                                                key));
     } else {
         TEST_FAIL("Key derivation algorithm not supported");
     }
@@ -596,11 +584,10 @@ static int exercise_key_agreement_key(mbedtls_svc_key_id_t key,
                                       psa_algorithm_t alg)
 {
     psa_key_derivation_operation_t operation = PSA_KEY_DERIVATION_OPERATION_INIT;
-    unsigned char input[1] = { 0 };
+    unsigned char input[1];
     unsigned char output[1];
     int ok = 0;
     psa_algorithm_t kdf_alg = PSA_ALG_KEY_AGREEMENT_GET_KDF(alg);
-    psa_status_t expected_key_agreement_status = PSA_SUCCESS;
 
     if (usage & PSA_KEY_USAGE_DERIVE) {
         /* We need two keys to exercise key agreement. Exercise the
@@ -613,39 +600,14 @@ static int exercise_key_agreement_key(mbedtls_svc_key_id_t key,
                            input, sizeof(input)));
         }
 
-        if (PSA_ALG_IS_HKDF_EXTRACT(kdf_alg)) {
-            PSA_ASSERT(psa_key_derivation_input_bytes(
-                           &operation, PSA_KEY_DERIVATION_INPUT_SALT,
-                           input, sizeof(input)));
-        }
-
-        /* For HKDF_EXPAND input secret may fail as secret size may not match
-           to expected PRK size. In practice it means that key bits must match
-           hash length. Otherwise test should fail with INVALID_ARGUMENT. */
-        if (PSA_ALG_IS_HKDF_EXPAND(kdf_alg)) {
-            psa_key_attributes_t attributes = PSA_KEY_ATTRIBUTES_INIT;
-            PSA_ASSERT(psa_get_key_attributes(key, &attributes));
-            size_t key_bits = psa_get_key_bits(&attributes);
-            psa_algorithm_t hash_alg = PSA_ALG_HKDF_GET_HASH(kdf_alg);
-
-            if (PSA_BITS_TO_BYTES(key_bits) != PSA_HASH_LENGTH(hash_alg)) {
-                expected_key_agreement_status = PSA_ERROR_INVALID_ARGUMENT;
-            }
-        }
-
-        TEST_EQUAL(mbedtls_test_psa_key_agreement_with_self(&operation, key),
-                   expected_key_agreement_status);
-
-        if (expected_key_agreement_status != PSA_SUCCESS) {
-            return 1;
-        }
+        PSA_ASSERT(mbedtls_test_psa_key_agreement_with_self(&operation, key));
 
         if (PSA_ALG_IS_TLS12_PRF(kdf_alg) ||
             PSA_ALG_IS_TLS12_PSK_TO_MS(kdf_alg)) {
             PSA_ASSERT(psa_key_derivation_input_bytes(
                            &operation, PSA_KEY_DERIVATION_INPUT_LABEL,
                            input, sizeof(input)));
-        } else if (PSA_ALG_IS_HKDF(kdf_alg) || PSA_ALG_IS_HKDF_EXPAND(kdf_alg)) {
+        } else if (PSA_ALG_IS_HKDF(kdf_alg)) {
             PSA_ASSERT(psa_key_derivation_input_bytes(
                            &operation, PSA_KEY_DERIVATION_INPUT_INFO,
                            input, sizeof(input)));
@@ -727,12 +689,14 @@ int mbedtls_test_psa_exported_key_sanity_check(
     } else
 #endif /* MBEDTLS_ASN1_PARSE_C */
 
+#if defined(MBEDTLS_ECP_C)
     if (PSA_KEY_TYPE_IS_ECC_KEY_PAIR(type)) {
         /* Just the secret value */
         TEST_EQUAL(exported_length, PSA_BITS_TO_BYTES(bits));
 
         TEST_ASSERT(exported_length <= PSA_EXPORT_KEY_PAIR_MAX_SIZE);
     } else
+#endif /* MBEDTLS_ECP_C */
 
 #if defined(MBEDTLS_ASN1_PARSE_C)
     if (type == PSA_KEY_TYPE_RSA_PUBLIC_KEY) {
@@ -764,6 +728,7 @@ int mbedtls_test_psa_exported_key_sanity_check(
     } else
 #endif /* MBEDTLS_ASN1_PARSE_C */
 
+#if defined(MBEDTLS_ECP_C)
     if (PSA_KEY_TYPE_IS_ECC_PUBLIC_KEY(type)) {
 
         TEST_ASSERT(exported_length <=
@@ -775,10 +740,6 @@ int mbedtls_test_psa_exported_key_sanity_check(
             /* The representation of an ECC Montgomery public key is
              * the raw compressed point */
             TEST_EQUAL(PSA_BITS_TO_BYTES(bits), exported_length);
-        } else if (PSA_KEY_TYPE_ECC_GET_FAMILY(type) == PSA_ECC_FAMILY_TWISTED_EDWARDS) {
-            /* The representation of an ECC Edwards public key is
-             * the raw compressed point */
-            TEST_EQUAL(PSA_BITS_TO_BYTES(bits + 1), exported_length);
         } else {
             /* The representation of an ECC Weierstrass public key is:
              *      - The byte 0x04;
@@ -790,12 +751,9 @@ int mbedtls_test_psa_exported_key_sanity_check(
             TEST_EQUAL(exported[0], 4);
         }
     } else
-    if (PSA_KEY_TYPE_IS_DH_PUBLIC_KEY(type) || PSA_KEY_TYPE_IS_DH_KEY_PAIR(type)) {
-        TEST_ASSERT(exported_length ==
-                    PSA_EXPORT_PUBLIC_KEY_OUTPUT_SIZE(type, bits));
-        TEST_ASSERT(exported_length <=
-                    PSA_EXPORT_PUBLIC_KEY_MAX_SIZE);
-    } else {
+#endif /* MBEDTLS_ECP_C */
+
+    {
         (void) exported;
         TEST_FAIL("Sanity check not implemented for this key type");
     }
