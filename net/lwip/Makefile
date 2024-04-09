@@ -24,6 +24,8 @@ obj-$(CONFIG_NET) += lwip-external/src/core/init.o \
 	lwip-external/src/core/altcp.o \
 	lwip-external/src/core/altcp_alloc.o \
 	lwip-external/src/core/altcp_tcp.o \
+	lwip-external/src/core/altcp_tls.o \
+	lwip-external/src/core/altcp_tls_mbedtls_mem.o \
 	lwip-external/src/core/tcp.o \
 	lwip-external/src/core/tcp_in.o \
 	lwip-external/src/core/tcp_out.o \

@@ -12,8 +12,6 @@
 
 #include "common.h"
 
-#if defined(MBEDTLS_CTR_DRBG_C)
-
 #include "mbedtls/ctr_drbg.h"
 #include "mbedtls/platform_util.h"
 #include "mbedtls/error.h"
@@ -890,5 +888,3 @@ int mbedtls_ctr_drbg_self_test(int verbose)
     return 0;
 }
 #endif /* MBEDTLS_SELF_TEST */
-
-#endif /* MBEDTLS_CTR_DRBG_C */

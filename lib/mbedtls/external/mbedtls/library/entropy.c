@@ -7,8 +7,6 @@
 
 #include "common.h"
 
-#if defined(MBEDTLS_ENTROPY_C)
-
 #if defined(MBEDTLS_TEST_NULL_ENTROPY)
 #warning "**** WARNING!  MBEDTLS_TEST_NULL_ENTROPY defined! "
 #warning "**** THIS BUILD HAS NO DEFINED ENTROPY SOURCES "
@@ -748,5 +746,3 @@ cleanup:
     return ret != 0;
 }
 #endif /* MBEDTLS_SELF_TEST */
-
-#endif /* MBEDTLS_ENTROPY_C */

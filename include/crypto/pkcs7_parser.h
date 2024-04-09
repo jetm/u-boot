@@ -12,7 +12,6 @@
 #include <crypto/pkcs7.h>
 #include <crypto/x509_parser.h>
 #if CONFIG_IS_ENABLED(MBEDTLS_LIB_X509)
-#include <external/mbedtls/include/mbedtls/pkcs7.h>
 #include <external/mbedtls/include/mbedtls/asn1.h>
 #include <external/mbedtls/include/mbedtls/oid.h>
 #endif

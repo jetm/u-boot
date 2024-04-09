@@ -13,8 +13,6 @@
 
 #include "common.h"
 
-#if defined(MBEDTLS_AES_C)
-
 #include <string.h>
 
 #include "mbedtls/aes.h"
@@ -2261,5 +2259,3 @@ exit:
 }
 
 #endif /* MBEDTLS_SELF_TEST */
-
-#endif /* MBEDTLS_AES_C */

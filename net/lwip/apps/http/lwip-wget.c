@@ -4,7 +4,6 @@
  * (C) Copyright 2023 Linaro Ltd. <maxim.uvarov@linaro.org>
  */
 
-#include <common.h>
 #include <command.h>
 #include <console.h>
 #include <vsprintf.h>
@@ -12,8 +11,7 @@
 #include "http_client.h"
 #include <net/ulwip.h>
 
-#include <lwip/opt.h>
-#include <lwip/apps/altcp_tls_mbedtls_opts.h>
+#include "lwip/altcp_tls.h"
 
 static ulong daddr;
 static httpc_connection_t settings;
@@ -55,7 +53,7 @@ static void httpc_result(void *arg, httpc_result_t httpc_result, u32_t rx_conten
 	}
 }
 
-/* http://hostname/url */
+/* http[s]://hostname/url */
 static int parse_url(char *url, char *host, u16 *port, char **path)
 {
 	char *p, *pp;
@@ -125,6 +123,11 @@ int ulwip_wget(ulong addr, char *url)
 	log_info("downloading %s to addr 0x%lx\n", url, addr);
 	memset(&settings, 0, sizeof(settings));
 	settings.result_fn = httpc_result;
+
+    struct altcp_tls_config *conf = altcp_tls_create_config_client (NULL, 0);
+    altcp_allocator_t tls_allocator = { altcp_tls_alloc, conf};
+    settings.altcp_allocator = &tls_allocator;
+
 	err = httpc_get_file_dns(server_name, port, path, &settings,
 				 httpc_recv, NULL,  &connection);
 	if (err != ERR_OK)
