@@ -2049,6 +2049,24 @@ config CMD_WOL
 
 endif
 
+if NET_LWIP
+
+menuconfig CMD_NET_LWIP
+	bool "Network commands (lwIP)"
+	default y
+
+if CMD_NET_LWIP
+
+config CMD_DHCP_LWIP
+	bool "dhcp"
+	select PROT_DHCP_LWIP
+	help
+	  Boot image via network using DHCP/TFTP protocol
+
+endif
+
+endif
+
 menu "Misc commands"
 
 config CMD_2048
