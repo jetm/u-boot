@@ -324,6 +324,7 @@ int mbedtls_entropy_func(void *data, unsigned char *output, size_t len)
     unsigned char buf[MBEDTLS_ENTROPY_BLOCK_SIZE];
 
     if (len > MBEDTLS_ENTROPY_BLOCK_SIZE) {
+        printf("MBEDTLS_ERR_ENTROPY_SOURCE_FAILED %s, %d\n", __func__, __LINE__);
         return MBEDTLS_ERR_ENTROPY_SOURCE_FAILED;
     }
 
@@ -351,6 +352,7 @@ int mbedtls_entropy_func(void *data, unsigned char *output, size_t len)
     do {
         if (count++ > ENTROPY_MAX_LOOP) {
             ret = MBEDTLS_ERR_ENTROPY_SOURCE_FAILED;
+            printf("MBEDTLS_ERR_ENTROPY_SOURCE_FAILED %s, %d\n", __func__, __LINE__);
             goto exit;
         }
 

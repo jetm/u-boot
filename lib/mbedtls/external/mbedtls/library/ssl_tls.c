@@ -5819,8 +5819,8 @@ int mbedtls_ssl_handshake(mbedtls_ssl_context *ssl)
     /* Main handshake loop */
     while (ssl->state != MBEDTLS_SSL_HANDSHAKE_OVER) {
         ret = mbedtls_ssl_handshake_step(ssl);
-
         if (ret != 0) {
+            printf("After mbedtls_ssl_handshake_step ret %d %s %d\n", ret, __func__, __LINE__);
             break;
         }
     }

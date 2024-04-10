@@ -364,7 +364,9 @@ static int mbedtls_ctr_drbg_reseed_internal(mbedtls_ctr_drbg_context *ctx,
     memset(seed, 0, MBEDTLS_CTR_DRBG_MAX_SEED_INPUT);
 
     /* Gather entropy_len bytes of entropy to seed state. */
-    if (0 != ctx->f_entropy(ctx->p_entropy, seed, ctx->entropy_len)) {
+    ret = ctx->f_entropy(ctx->p_entropy, seed, ctx->entropy_len);
+    if (ret != 0) {
+        printf("f_entropy failed, ret %d seed %s len %ld %s %d\n", ret, seed, ctx->entropy_len, __func__, __LINE__);
         return MBEDTLS_ERR_CTR_DRBG_ENTROPY_SOURCE_FAILED;
     }
     seedlen += ctx->entropy_len;
@@ -372,6 +374,7 @@ static int mbedtls_ctr_drbg_reseed_internal(mbedtls_ctr_drbg_context *ctx,
     /* Gather entropy for a nonce if requested. */
     if (nonce_len != 0) {
         if (0 != ctx->f_entropy(ctx->p_entropy, seed + seedlen, nonce_len)) {
+            printf("f_entropy failed: %s %d\n", __func__, __LINE__);
             return MBEDTLS_ERR_CTR_DRBG_ENTROPY_SOURCE_FAILED;
         }
         seedlen += nonce_len;
@@ -466,12 +469,14 @@ int mbedtls_ctr_drbg_seed(mbedtls_ctr_drbg_context *ctx,
     /* Initialize with an empty key. */
     if ((ret = mbedtls_aes_setkey_enc(&ctx->aes_ctx, key,
                                       MBEDTLS_CTR_DRBG_KEYBITS)) != 0) {
+        printf("ret %d %s %d\n", ret, __func__, __LINE__);
         return ret;
     }
 
     /* Do the initial seeding. */
     if ((ret = mbedtls_ctr_drbg_reseed_internal(ctx, custom, len,
                                                 nonce_len)) != 0) {
+        printf("ret %d %s %d\n", ret, __func__, __LINE__);
         return ret;
     }
     return 0;

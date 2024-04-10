@@ -6,11 +6,13 @@
 
 #include <command.h>
 #include <console.h>
+#include <stdio.h>
 #include <vsprintf.h>
 
 #include "http_client.h"
 #include <net/ulwip.h>
 
+#include <lwip/arch.h>
 #include "lwip/altcp_tls.h"
 
 static ulong daddr;
@@ -35,6 +37,7 @@ static err_t httpc_recv(void *arg, struct altcp_pcb *pcb, struct pbuf *pbuf,
 		daddr += buf->len;
 	}
 
+	printf("Before altcp_recved %s, %d\n", __func__, __LINE__);
 	altcp_recved(pcb, pbuf->tot_len);
 	pbuf_free(pbuf);
 	return ERR_OK;
@@ -44,11 +47,11 @@ static void httpc_result(void *arg, httpc_result_t httpc_result, u32_t rx_conten
 			 u32_t srv_res, err_t err)
 {
 	if (httpc_result == HTTPC_RESULT_OK) {
-		log_info("\n%d bytes successfully downloaded.\n", rx_content_len);
+		log_info("%d bytes successfully downloaded.\n", rx_content_len);
 		env_set_hex("filesize", rx_content_len);
 		ulwip_exit(0);
 	} else {
-		log_err("\nhttp error: %d\n", httpc_result);
+		log_err("http error: %d %d %d %s %d\n", httpc_result, srv_res, err, __func__, __LINE__);
 		ulwip_exit(-1);
 	}
 }
@@ -106,6 +109,19 @@ static int parse_url(char *url, char *host, u16 *port, char **path)
 	return 0;
 }
 
+int mbedtls_hardware_poll(void *data,
+                          unsigned char *output, size_t len, size_t *olen) {
+  LWIP_UNUSED_ARG(data);
+
+  for (size_t i = len; i-- > 0; ) {
+    *(output++) = LWIP_RAND();
+  }
+  if (olen != NULL) {
+    *olen = len;
+  }
+  return 0;
+}
+
 int ulwip_wget(ulong addr, char *url)
 {
 	err_t err;
@@ -124,15 +140,22 @@ int ulwip_wget(ulong addr, char *url)
 	memset(&settings, 0, sizeof(settings));
 	settings.result_fn = httpc_result;
 
-    struct altcp_tls_config *conf = altcp_tls_create_config_client (NULL, 0);
-    altcp_allocator_t tls_allocator = { altcp_tls_alloc, conf};
-    settings.altcp_allocator = &tls_allocator;
+		altcp_allocator_t tls_allocator;
+
+		tls_allocator.alloc = &altcp_tls_alloc;
+		tls_allocator.arg = altcp_tls_create_config_client(NULL, 0);
+		settings.altcp_allocator = &tls_allocator;
+		if (!tls_allocator.arg)
+				printf("tls_allocator arg is null\n");
+
+		printf("Before httpc_get_file_dns\n");
 
 	err = httpc_get_file_dns(server_name, port, path, &settings,
 				 httpc_recv, NULL,  &connection);
 	if (err != ERR_OK)
 		return -EPERM;
 
+	printf("Before env_set_hex ret %d %s %d\n", err, __func__, __LINE__);
 	if (env_set_hex("fileaddr", addr))
 		return -EACCES;
 

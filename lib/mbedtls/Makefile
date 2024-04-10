@@ -42,6 +42,7 @@ mbedtls_lib_crypto-y := \
 	$(MBEDTLS_LIB_DIR)/ecdsa.o \
 	$(MBEDTLS_LIB_DIR)/ecjpake.o \
 	$(MBEDTLS_LIB_DIR)/ecp.o \
+	$(MBEDTLS_LIB_DIR)/ecp_curves.o \
 	$(MBEDTLS_LIB_DIR)/entropy.o \
 	$(MBEDTLS_LIB_DIR)/entropy_poll.o \
 	$(MBEDTLS_LIB_DIR)/error.o \
@@ -95,6 +96,7 @@ mbedtls_lib_tls-y := \
 	$(MBEDTLS_LIB_DIR)/net_sockets.o \
 	$(MBEDTLS_LIB_DIR)/ssl_cache.o \
 	$(MBEDTLS_LIB_DIR)/ssl_ciphersuites.o \
+	$(MBEDTLS_LIB_DIR)/ssl_cli.o \
 	$(MBEDTLS_LIB_DIR)/ssl_cookie.o \
 	$(MBEDTLS_LIB_DIR)/ssl_msg.o \
 	$(MBEDTLS_LIB_DIR)/ssl_ticket.o \

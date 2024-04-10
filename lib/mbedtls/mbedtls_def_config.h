@@ -540,7 +540,7 @@
  *
  * Uncomment to use your own hardware entropy collector.
  */
-//#define MBEDTLS_ENTROPY_HARDWARE_ALT
+#define MBEDTLS_ENTROPY_HARDWARE_ALT
 
 /**
  * \def MBEDTLS_AES_ROM_TABLES
@@ -710,7 +710,7 @@
  *
  * Uncomment this macro to enable the NULL cipher and ciphersuites
  */
-//#define MBEDTLS_CIPHER_NULL_CIPHER
+#define MBEDTLS_CIPHER_NULL_CIPHER
 
 /**
  * \def MBEDTLS_CIPHER_PADDING_PKCS7
@@ -734,7 +734,7 @@
  * Without this, CTR_DRBG uses a 256-bit key
  * unless \c MBEDTLS_AES_ONLY_128_BIT_KEY_LENGTH is set.
  */
-//#define MBEDTLS_CTR_DRBG_USE_128_BIT_KEY
+#define MBEDTLS_CTR_DRBG_USE_128_BIT_KEY
 
 /**
  * Enable the verified implementations of ECDH primitives from Project Everest
@@ -746,7 +746,7 @@
  * The Everest code is provided under the Apache 2.0 license only; therefore enabling this
  * option is not compatible with taking the library under the GPL v2.0-or-later license.
  */
-//#define MBEDTLS_ECDH_VARIANT_EVEREST_ENABLED
+// #define MBEDTLS_ECDH_VARIANT_EVEREST_ENABLED
 
 /**
  * \def MBEDTLS_ECP_DP_SECP192R1_ENABLED
@@ -757,20 +757,20 @@
  * Comment macros to disable the curve and functions for it
  */
 /* Short Weierstrass curves (supporting ECP, ECDH, ECDSA) */
-// #define MBEDTLS_ECP_DP_SECP192R1_ENABLED
-// #define MBEDTLS_ECP_DP_SECP224R1_ENABLED
-// #define MBEDTLS_ECP_DP_SECP256R1_ENABLED
-// #define MBEDTLS_ECP_DP_SECP384R1_ENABLED
-// #define MBEDTLS_ECP_DP_SECP521R1_ENABLED
-// #define MBEDTLS_ECP_DP_SECP192K1_ENABLED
-// #define MBEDTLS_ECP_DP_SECP224K1_ENABLED
-// #define MBEDTLS_ECP_DP_SECP256K1_ENABLED
-// #define MBEDTLS_ECP_DP_BP256R1_ENABLED
-// #define MBEDTLS_ECP_DP_BP384R1_ENABLED
-// #define MBEDTLS_ECP_DP_BP512R1_ENABLED
+#define MBEDTLS_ECP_DP_SECP192R1_ENABLED
+#define MBEDTLS_ECP_DP_SECP224R1_ENABLED
+#define MBEDTLS_ECP_DP_SECP256R1_ENABLED
+#define MBEDTLS_ECP_DP_SECP384R1_ENABLED
+#define MBEDTLS_ECP_DP_SECP521R1_ENABLED
+#define MBEDTLS_ECP_DP_SECP192K1_ENABLED
+#define MBEDTLS_ECP_DP_SECP224K1_ENABLED
+#define MBEDTLS_ECP_DP_SECP256K1_ENABLED
+#define MBEDTLS_ECP_DP_BP256R1_ENABLED
+#define MBEDTLS_ECP_DP_BP384R1_ENABLED
+#define MBEDTLS_ECP_DP_BP512R1_ENABLED
 /* Montgomery curves (supporting ECP) */
-// #define MBEDTLS_ECP_DP_CURVE25519_ENABLED
-// #define MBEDTLS_ECP_DP_CURVE448_ENABLED
+#define MBEDTLS_ECP_DP_CURVE25519_ENABLED
+#define MBEDTLS_ECP_DP_CURVE448_ENABLED
 
 /**
  * \def MBEDTLS_ECP_NIST_OPTIM
@@ -781,7 +781,7 @@
  *
  * Comment this macro to disable NIST curves optimisation.
  */
-// #define MBEDTLS_ECP_NIST_OPTIM
+#define MBEDTLS_ECP_NIST_OPTIM
 
 /**
  * \def MBEDTLS_ECP_RESTARTABLE
@@ -836,7 +836,7 @@
  *
  * Uncomment this macro to enable restartable ECC computations.
  */
-//#define MBEDTLS_ECP_RESTARTABLE
+#define MBEDTLS_ECP_RESTARTABLE
 
 /**
  * Uncomment to enable using new bignum code in the ECC modules.
@@ -844,7 +844,7 @@
  * \warning This is currently experimental, incomplete and therefore should not
  * be used in production.
  */
-//#define MBEDTLS_ECP_WITH_MPI_UINT
+#define MBEDTLS_ECP_WITH_MPI_UINT
 
 /**
  * \def MBEDTLS_ECDSA_DETERMINISTIC
@@ -858,7 +858,7 @@
  *
  * Comment this macro to disable deterministic ECDSA.
  */
-// #define MBEDTLS_ECDSA_DETERMINISTIC
+#define MBEDTLS_ECDSA_DETERMINISTIC
 
 /**
  * \def MBEDTLS_KEY_EXCHANGE_PSK_ENABLED
@@ -878,7 +878,7 @@
  *      MBEDTLS_TLS_PSK_WITH_CAMELLIA_128_GCM_SHA256
  *      MBEDTLS_TLS_PSK_WITH_CAMELLIA_128_CBC_SHA256
  */
-// #define MBEDTLS_KEY_EXCHANGE_PSK_ENABLED
+#define MBEDTLS_KEY_EXCHANGE_PSK_ENABLED
 
 /**
  * \def MBEDTLS_KEY_EXCHANGE_DHE_PSK_ENABLED
@@ -907,7 +907,7 @@
  *             See dhm.h for more details.
  *
  */
-// #define MBEDTLS_KEY_EXCHANGE_DHE_PSK_ENABLED
+#define MBEDTLS_KEY_EXCHANGE_DHE_PSK_ENABLED
 
 /**
  * \def MBEDTLS_KEY_EXCHANGE_ECDHE_PSK_ENABLED
@@ -925,7 +925,7 @@
  *      MBEDTLS_TLS_ECDHE_PSK_WITH_AES_128_CBC_SHA
  *      MBEDTLS_TLS_ECDHE_PSK_WITH_CAMELLIA_128_CBC_SHA256
  */
-// #define MBEDTLS_KEY_EXCHANGE_ECDHE_PSK_ENABLED
+#define MBEDTLS_KEY_EXCHANGE_ECDHE_PSK_ENABLED
 
 /**
  * \def MBEDTLS_KEY_EXCHANGE_RSA_PSK_ENABLED
@@ -948,7 +948,7 @@
  *      MBEDTLS_TLS_RSA_PSK_WITH_CAMELLIA_128_GCM_SHA256
  *      MBEDTLS_TLS_RSA_PSK_WITH_CAMELLIA_128_CBC_SHA256
  */
-// #define MBEDTLS_KEY_EXCHANGE_RSA_PSK_ENABLED
+#define MBEDTLS_KEY_EXCHANGE_RSA_PSK_ENABLED
 
 /**
  * \def MBEDTLS_KEY_EXCHANGE_RSA_ENABLED
@@ -1005,7 +1005,7 @@
  *             See dhm.h for more details.
  *
  */
-// #define MBEDTLS_KEY_EXCHANGE_DHE_RSA_ENABLED
+#define MBEDTLS_KEY_EXCHANGE_DHE_RSA_ENABLED
 
 /**
  * \def MBEDTLS_KEY_EXCHANGE_ECDHE_RSA_ENABLED
@@ -1030,7 +1030,7 @@
  *      MBEDTLS_TLS_ECDHE_RSA_WITH_CAMELLIA_128_GCM_SHA256
  *      MBEDTLS_TLS_ECDHE_RSA_WITH_CAMELLIA_128_CBC_SHA256
  */
-// #define MBEDTLS_KEY_EXCHANGE_ECDHE_RSA_ENABLED
+#define MBEDTLS_KEY_EXCHANGE_ECDHE_RSA_ENABLED
 
 /**
  * \def MBEDTLS_KEY_EXCHANGE_ECDHE_ECDSA_ENABLED
@@ -1054,7 +1054,7 @@
  *      MBEDTLS_TLS_ECDHE_ECDSA_WITH_CAMELLIA_128_GCM_SHA256
  *      MBEDTLS_TLS_ECDHE_ECDSA_WITH_CAMELLIA_128_CBC_SHA256
  */
-// #define MBEDTLS_KEY_EXCHANGE_ECDHE_ECDSA_ENABLED
+#define MBEDTLS_KEY_EXCHANGE_ECDHE_ECDSA_ENABLED
 
 /**
  * \def MBEDTLS_KEY_EXCHANGE_ECDH_ECDSA_ENABLED
@@ -1078,7 +1078,7 @@
  *      MBEDTLS_TLS_ECDH_ECDSA_WITH_CAMELLIA_128_GCM_SHA256
  *      MBEDTLS_TLS_ECDH_ECDSA_WITH_CAMELLIA_256_GCM_SHA384
  */
-// #define MBEDTLS_KEY_EXCHANGE_ECDH_ECDSA_ENABLED
+#define MBEDTLS_KEY_EXCHANGE_ECDH_ECDSA_ENABLED
 
 /**
  * \def MBEDTLS_KEY_EXCHANGE_ECDH_RSA_ENABLED
@@ -1102,7 +1102,7 @@
  *      MBEDTLS_TLS_ECDH_RSA_WITH_CAMELLIA_128_GCM_SHA256
  *      MBEDTLS_TLS_ECDH_RSA_WITH_CAMELLIA_256_GCM_SHA384
  */
-// #define MBEDTLS_KEY_EXCHANGE_ECDH_RSA_ENABLED
+#define MBEDTLS_KEY_EXCHANGE_ECDH_RSA_ENABLED
 
 /**
  * \def MBEDTLS_KEY_EXCHANGE_ECJPAKE_ENABLED
@@ -1125,7 +1125,7 @@
  * enabled as well):
  *      MBEDTLS_TLS_ECJPAKE_WITH_AES_128_CCM_8
  */
-//#define MBEDTLS_KEY_EXCHANGE_ECJPAKE_ENABLED
+#define MBEDTLS_KEY_EXCHANGE_ECJPAKE_ENABLED
 
 /**
  * \def MBEDTLS_PK_PARSE_EC_EXTENDED
@@ -1524,7 +1524,7 @@
  *
  * Enable sending of all alert messages
  */
-// #define MBEDTLS_SSL_ALL_ALERT_MESSAGES
+#define MBEDTLS_SSL_ALL_ALERT_MESSAGES
 
 /**
  * \def MBEDTLS_SSL_DTLS_CONNECTION_ID
@@ -1548,7 +1548,7 @@
  *
  * Uncomment to enable the Connection ID extension.
  */
-// #define MBEDTLS_SSL_DTLS_CONNECTION_ID
+#define MBEDTLS_SSL_DTLS_CONNECTION_ID
 
 /**
  * \def MBEDTLS_SSL_DTLS_CONNECTION_ID_COMPAT
@@ -1570,7 +1570,7 @@
  *
  * Requires: MBEDTLS_SSL_DTLS_CONNECTION_ID
  */
-// #define MBEDTLS_SSL_DTLS_CONNECTION_ID_COMPAT 0
+#define MBEDTLS_SSL_DTLS_CONNECTION_ID_COMPAT 0
 
 /**
  * \def MBEDTLS_SSL_ASYNC_PRIVATE
@@ -1582,7 +1582,7 @@
  *
  * Requires: MBEDTLS_X509_CRT_PARSE_C
  */
-//#define MBEDTLS_SSL_ASYNC_PRIVATE
+#define MBEDTLS_SSL_ASYNC_PRIVATE
 
 /**
  * \def MBEDTLS_SSL_CONTEXT_SERIALIZATION
@@ -1611,7 +1611,7 @@
  *
  * Comment to disable the context serialization APIs.
  */
-// #define MBEDTLS_SSL_CONTEXT_SERIALIZATION
+#define MBEDTLS_SSL_CONTEXT_SERIALIZATION
 
 /**
  * \def MBEDTLS_SSL_DEBUG_ALL
@@ -1627,7 +1627,7 @@
  * a timing side-channel.
  *
  */
-//#define MBEDTLS_SSL_DEBUG_ALL
+#define MBEDTLS_SSL_DEBUG_ALL
 
 /** \def MBEDTLS_SSL_ENCRYPT_THEN_MAC
  *
@@ -1643,7 +1643,7 @@
  *
  * Comment this macro to disable support for Encrypt-then-MAC
  */
-// #define MBEDTLS_SSL_ENCRYPT_THEN_MAC
+#define MBEDTLS_SSL_ENCRYPT_THEN_MAC
 
 /** \def MBEDTLS_SSL_EXTENDED_MASTER_SECRET
  *
@@ -1659,7 +1659,7 @@
  *
  * Comment this macro to disable support for Extended Master Secret.
  */
-// #define MBEDTLS_SSL_EXTENDED_MASTER_SECRET
+#define MBEDTLS_SSL_EXTENDED_MASTER_SECRET
 
 /**
  * \def MBEDTLS_SSL_KEEP_PEER_CERTIFICATE
@@ -1707,7 +1707,7 @@
  *          configuration of this extension).
  *
  */
-// #define MBEDTLS_SSL_RENEGOTIATION
+#define MBEDTLS_SSL_RENEGOTIATION
 
 /**
  * \def MBEDTLS_SSL_MAX_FRAGMENT_LENGTH
@@ -1716,7 +1716,7 @@
  *
  * Comment this macro to disable support for the max_fragment_length extension
  */
-// #define MBEDTLS_SSL_MAX_FRAGMENT_LENGTH
+#define MBEDTLS_SSL_MAX_FRAGMENT_LENGTH
 
 /**
  * \def MBEDTLS_SSL_RECORD_SIZE_LIMIT
@@ -1873,7 +1873,7 @@
  *
  * Comment this macro to disable support for DTLS
  */
-// #define MBEDTLS_SSL_PROTO_DTLS
+#define MBEDTLS_SSL_PROTO_DTLS
 
 /**
  * \def MBEDTLS_SSL_ALPN
@@ -1897,7 +1897,7 @@
  *
  * Comment this to disable anti-replay in DTLS.
  */
-// #define MBEDTLS_SSL_DTLS_ANTI_REPLAY
+#define MBEDTLS_SSL_DTLS_ANTI_REPLAY
 
 /**
  * \def MBEDTLS_SSL_DTLS_HELLO_VERIFY
@@ -1915,7 +1915,7 @@
  *
  * Comment this to disable support for HelloVerifyRequest.
  */
-// #define MBEDTLS_SSL_DTLS_HELLO_VERIFY
+#define MBEDTLS_SSL_DTLS_HELLO_VERIFY
 
 /**
  * \def MBEDTLS_SSL_DTLS_SRTP
@@ -1946,7 +1946,7 @@
  *
  * Uncomment this to enable support for use_srtp extension.
  */
-//#define MBEDTLS_SSL_DTLS_SRTP
+#define MBEDTLS_SSL_DTLS_SRTP
 
 /**
  * \def MBEDTLS_SSL_DTLS_CLIENT_PORT_REUSE
@@ -1962,7 +1962,7 @@
  *
  * Comment this to disable support for clients reusing the source port.
  */
-// #define MBEDTLS_SSL_DTLS_CLIENT_PORT_REUSE
+#define MBEDTLS_SSL_DTLS_CLIENT_PORT_REUSE
 
 /**
  * \def MBEDTLS_SSL_SESSION_TICKETS
@@ -1976,7 +1976,7 @@
  *
  * Comment this macro to disable support for SSL session tickets
  */
-// #define MBEDTLS_SSL_SESSION_TICKETS
+#define MBEDTLS_SSL_SESSION_TICKETS
 
 /**
  * \def MBEDTLS_SSL_SERVER_NAME_INDICATION
@@ -1987,7 +1987,7 @@
  *
  * Comment this macro to disable support for server name indication in SSL
  */
-// #define MBEDTLS_SSL_SERVER_NAME_INDICATION
+#define MBEDTLS_SSL_SERVER_NAME_INDICATION
 
 /**
  * \def MBEDTLS_SSL_VARIABLE_BUFFER_LENGTH
@@ -2446,7 +2446,7 @@
  *      MBEDTLS_TLS_PSK_WITH_CAMELLIA_128_GCM_SHA256
  *      MBEDTLS_TLS_PSK_WITH_CAMELLIA_128_CBC_SHA256
  */
-// #define MBEDTLS_CAMELLIA_C
+#define MBEDTLS_CAMELLIA_C
 
 /**
  * \def MBEDTLS_ARIA_C
@@ -2498,7 +2498,7 @@
  *      MBEDTLS_TLS_ECDHE_PSK_WITH_ARIA_128_CBC_SHA256
  *      MBEDTLS_TLS_ECDHE_PSK_WITH_ARIA_256_CBC_SHA384
  */
-// #define MBEDTLS_ARIA_C
+#define MBEDTLS_ARIA_C
 
 /**
  * \def MBEDTLS_CCM_C
@@ -2513,7 +2513,7 @@
  * This module enables the AES-CCM ciphersuites, if other requisites are
  * enabled as well.
  */
-// #define MBEDTLS_CCM_C
+#define MBEDTLS_CCM_C
 
 /**
  * \def MBEDTLS_CHACHA20_C
@@ -2522,7 +2522,7 @@
  *
  * Module:  library/chacha20.c
  */
-// #define MBEDTLS_CHACHA20_C
+#define MBEDTLS_CHACHA20_C
 
 /**
  * \def MBEDTLS_CHACHAPOLY_C
@@ -2595,7 +2595,7 @@
  *
  * This module provides the CTR_DRBG AES random number generator.
  */
-// #define MBEDTLS_CTR_DRBG_C
+#define MBEDTLS_CTR_DRBG_C
 
 /**
  * \def MBEDTLS_DEBUG_C
@@ -2610,7 +2610,7 @@
  *
  * This module provides debugging functions.
  */
-// #define MBEDTLS_DEBUG_C
+#define MBEDTLS_DEBUG_C
 
 /**
  * \def MBEDTLS_DES_C
@@ -2626,7 +2626,7 @@
  * \warning   DES/3DES are considered weak ciphers and their use constitutes a
  *            security risk. We recommend considering stronger ciphers instead.
  */
-// #define MBEDTLS_DES_C
+#define MBEDTLS_DES_C
 
 /**
  * \def MBEDTLS_DHM_C
@@ -2648,7 +2648,7 @@
  *             See dhm.h for more details.
  *
  */
-// #define MBEDTLS_DHM_C
+#define MBEDTLS_DHM_C
 
 /**
  * \def MBEDTLS_ECDH_C
@@ -2666,7 +2666,7 @@
  *
  * Requires: MBEDTLS_ECP_C
  */
-// #define MBEDTLS_ECDH_C
+#define MBEDTLS_ECDH_C
 
 /**
  * \def MBEDTLS_ECDSA_C
@@ -2683,7 +2683,7 @@
  *           and at least one MBEDTLS_ECP_DP_XXX_ENABLED for a
  *           short Weierstrass curve.
  */
-// #define MBEDTLS_ECDSA_C
+#define MBEDTLS_ECDSA_C
 
 /**
  * \def MBEDTLS_ECJPAKE_C
@@ -2705,7 +2705,7 @@
  * \warning If using a hash that is only provided by PSA drivers, you must
  * call psa_crypto_init() before doing any EC J-PAKE operations.
  */
-// #define MBEDTLS_ECJPAKE_C
+#define MBEDTLS_ECJPAKE_C
 
 /**
  * \def MBEDTLS_ECP_C
@@ -2719,7 +2719,7 @@
  *
  * Requires: MBEDTLS_BIGNUM_C and at least one MBEDTLS_ECP_DP_XXX_ENABLED
  */
-// #define MBEDTLS_ECP_C
+#define MBEDTLS_ECP_C
 
 /**
  * \def MBEDTLS_ENTROPY_C
@@ -2789,7 +2789,7 @@
  *
  * Uncomment to enable the HMAC_DRBG random number generator.
  */
-// #define MBEDTLS_HMAC_DRBG_C
+#define MBEDTLS_HMAC_DRBG_C
 
 /**
  * \def MBEDTLS_LMS_C
@@ -3470,7 +3470,7 @@
  *
  * This module is required for SSL/TLS client support.
  */
-// #define MBEDTLS_SSL_CLI_C
+#define MBEDTLS_SSL_CLI_C
 
 /**
  * \def MBEDTLS_SSL_SRV_C
@@ -4043,7 +4043,7 @@
  * while buffering multiple smaller handshake messages.
  *
  */
-//#define MBEDTLS_SSL_DTLS_MAX_BUFFERING             32768
+#define MBEDTLS_SSL_DTLS_MAX_BUFFERING             32768
 
 //#define MBEDTLS_PSK_MAX_LEN               32 /**< Max size of TLS pre-shared keys, in bytes (default 256 or 384 bits) */
 //#define MBEDTLS_SSL_COOKIE_TIMEOUT        60 /**< Default expiration delay of DTLS cookies, in seconds if HAVE_TIME, or in number of cookies issued */

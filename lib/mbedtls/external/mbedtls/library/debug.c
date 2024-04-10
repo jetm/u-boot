@@ -21,7 +21,7 @@
 /* DEBUG_BUF_SIZE must be at least 2 */
 #define DEBUG_BUF_SIZE      512
 
-static int debug_threshold = 0;
+static int debug_threshold = 99;
 
 void mbedtls_debug_set_threshold(int threshold)
 {
@@ -66,7 +66,7 @@ void mbedtls_debug_print_msg(const mbedtls_ssl_context *ssl, int level,
         level > debug_threshold) {
         return;
     }
-
+    // printf("%p %p %p %d %d %s:%d:\n", ssl, ssl->conf, ssl->conf->f_dbg, level, debug_threshold, __func__, __LINE__);
     va_start(argp, format);
     ret = mbedtls_vsnprintf(str, DEBUG_BUF_SIZE, format, argp);
     va_end(argp);
