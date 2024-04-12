@@ -2063,6 +2063,13 @@ config CMD_DHCP_LWIP
 	help
 	  Boot image via network using DHCP/TFTP protocol
 
+config CMD_TFTPBOOT_LWIP
+	bool "tftp"
+	select PROT_UDP_LWIP
+	default y
+	help
+	  tftpboot - load file via network using TFTP protocol
+
 endif
 
 endif
