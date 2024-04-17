@@ -378,9 +378,7 @@ static inline const unsigned char *mbedtls_buffer_offset_const(
 #endif
 
 #define CHAR_BIT 8
-#define UINT_MAX       4294967295
-#define SIZE_MAX      18446744073709551615
-#define INT_MIN (1 << (sizeof(int)*CHAR_BIT-1))
-#define INT_MAX (-(INT_MIN+1))
+// #define	UINT_MAX	0xffffffffU	/* max value for an unsigned int */
+#define	INT_MAX		0x7fffffff	/* max value for an int */
 
 #endif /* MBEDTLS_LIBRARY_COMMON_H */

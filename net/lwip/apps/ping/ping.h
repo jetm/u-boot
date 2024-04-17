@@ -5,7 +5,7 @@
 
 void ping_tmo(void *arg);
 
-#define LWIP_DEBUG 1 /* ping_time is under ifdef*/
+// #define LWIP_DEBUG 1 /* ping_time is under ifdef*/
 #define PING_RESULT(cond) { \
 	if (cond == 1) { \
 		printf("host %s is alive\n", ipaddr_ntoa(addr)); \

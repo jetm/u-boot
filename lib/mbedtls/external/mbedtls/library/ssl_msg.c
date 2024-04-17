@@ -1980,6 +1980,7 @@ int mbedtls_ssl_fetch_input(mbedtls_ssl_context *ssl, size_t nb_want)
 
             if (mbedtls_ssl_check_timer(ssl) != 0) {
                 ret = MBEDTLS_ERR_SSL_TIMEOUT;
+                // MBEDTLS_SSL_DEBUG_RET(2, "ssl->f_recv_timeout", ret);
             } else {
                 if (ssl->f_recv_timeout != NULL) {
                     ret = ssl->f_recv_timeout(ssl->p_bio,
@@ -1988,6 +1989,8 @@ int mbedtls_ssl_fetch_input(mbedtls_ssl_context *ssl, size_t nb_want)
                 } else {
                     ret = ssl->f_recv(ssl->p_bio,
                                       ssl->in_hdr + ssl->in_left, len);
+                    // MBEDTLS_SSL_DEBUG_MSG(1, ("ssl->conf->read_timeout %d", ssl->conf->read_timeout));
+                    // MBEDTLS_SSL_DEBUG_RET(2, "ssl->f_recv", ret);
                 }
             }
 
@@ -3791,12 +3794,14 @@ int mbedtls_ssl_read_record(mbedtls_ssl_context *ssl,
     MBEDTLS_SSL_DEBUG_MSG(2, ("=> read record"));
 
     if (ssl->keep_current_message == 0) {
+        // MBEDTLS_SSL_DEBUG_MSG(2, ("keep_current_message"));
         do {
 
             ret = ssl_consume_current_message(ssl);
             if (ret != 0) {
                 return ret;
             }
+            // MBEDTLS_SSL_DEBUG_MSG(2, ("after ssl_consume_current_message"));
 
             if (ssl_record_is_in_progress(ssl) == 0) {
                 int dtls_have_buffered = 0;
@@ -3812,6 +3817,7 @@ int mbedtls_ssl_read_record(mbedtls_ssl_context *ssl,
                 }
 
 #endif /* MBEDTLS_SSL_PROTO_DTLS */
+                // MBEDTLS_SSL_DEBUG_MSG(2, ("before dtls_have_buffered"));
                 if (dtls_have_buffered == 0) {
                     ret = ssl_get_next_record(ssl);
                     if (ret == MBEDTLS_ERR_SSL_CONTINUE_PROCESSING) {

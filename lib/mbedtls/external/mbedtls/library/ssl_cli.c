@@ -883,7 +883,8 @@ static int ssl_generate_random(mbedtls_ssl_context *ssl)
 #endif
 
 #if defined(MBEDTLS_HAVE_TIME)
-    t = mbedtls_time(NULL);
+    // t = mbedtls_time(NULL);
+    t = 0;
     MBEDTLS_PUT_UINT32_BE(t, p, 0);
     p += 4;
 
@@ -2213,7 +2214,8 @@ static int ssl_parse_server_hello(mbedtls_ssl_context *ssl)
         ssl->state++;
         ssl->handshake->resume = 0;
 #if defined(MBEDTLS_HAVE_TIME)
-        ssl->session_negotiate->start = mbedtls_time(NULL);
+        // ssl->session_negotiate->start = mbedtls_time(NULL);
+        ssl->session_negotiate->start = 0;
 #endif
         ssl->session_negotiate->ciphersuite = i;
         ssl->session_negotiate->compression = comp;
@@ -4147,6 +4149,7 @@ static int ssl_parse_new_session_ticket(mbedtls_ssl_context *ssl)
     MBEDTLS_SSL_DEBUG_MSG(2, ("=> parse new session ticket"));
 
     if ((ret = mbedtls_ssl_read_record(ssl, 1)) != 0) {
+        MBEDTLS_SSL_DEBUG_MSG(3, ("msg: %" MBEDTLS_PRINTF_SIZET, msg));
         MBEDTLS_SSL_DEBUG_RET(1, "mbedtls_ssl_read_record", ret);
         return ret;
     }

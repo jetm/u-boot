@@ -14,6 +14,7 @@
 
 #include <lwip/arch.h>
 #include "lwip/altcp_tls.h"
+#include "mbedtls/debug.h"
 
 static ulong daddr;
 static httpc_connection_t settings;
@@ -139,6 +140,8 @@ int ulwip_wget(ulong addr, char *url)
 	log_info("downloading %s to addr 0x%lx\n", url, addr);
 	memset(&settings, 0, sizeof(settings));
 	settings.result_fn = httpc_result;
+
+		mbedtls_debug_set_threshold(99);
 
 		altcp_allocator_t tls_allocator;
 

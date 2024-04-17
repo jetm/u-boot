@@ -37,7 +37,8 @@ int mbedtls_ssl_cache_get(void *data, mbedtls_ssl_session *session)
 {
     int ret = MBEDTLS_ERR_SSL_CACHE_ENTRY_NOT_FOUND;
 #if defined(MBEDTLS_HAVE_TIME)
-    mbedtls_time_t t = mbedtls_time(NULL);
+    // mbedtls_time_t t = mbedtls_time(NULL);
+    mbedtls_time_t t = 0;
 #endif
     mbedtls_ssl_cache_context *cache = (mbedtls_ssl_cache_context *) data;
     mbedtls_ssl_cache_entry *cur, *entry;
@@ -117,7 +118,8 @@ int mbedtls_ssl_cache_set(void *data, const mbedtls_ssl_session *session)
 {
     int ret = MBEDTLS_ERR_ERROR_CORRUPTION_DETECTED;
 #if defined(MBEDTLS_HAVE_TIME)
-    mbedtls_time_t t = mbedtls_time(NULL), oldest = 0;
+    // mbedtls_time_t t = mbedtls_time(NULL), oldest = 0;
+    mbedtls_time_t t = 0, oldest = 0;
     mbedtls_ssl_cache_entry *old = NULL;
 #endif
     mbedtls_ssl_cache_context *cache = (mbedtls_ssl_cache_context *) data;

@@ -21,7 +21,7 @@
 /* DEBUG_BUF_SIZE must be at least 2 */
 #define DEBUG_BUF_SIZE      512
 
-static int debug_threshold = 99;
+static int debug_threshold = 0;
 
 void mbedtls_debug_set_threshold(int threshold)
 {
@@ -66,7 +66,6 @@ void mbedtls_debug_print_msg(const mbedtls_ssl_context *ssl, int level,
         level > debug_threshold) {
         return;
     }
-    // printf("%p %p %p %d %d %s:%d:\n", ssl, ssl->conf, ssl->conf->f_dbg, level, debug_threshold, __func__, __LINE__);
     va_start(argp, format);
     ret = mbedtls_vsnprintf(str, DEBUG_BUF_SIZE, format, argp);
     va_end(argp);
@@ -83,6 +82,35 @@ void mbedtls_debug_print_msg(const mbedtls_ssl_context *ssl, int level,
 
     debug_send_line(ssl, level, file, line, str);
 }
+
+// MBEDTLS_PRINTF_ATTRIBUTE(5, 6)
+// void mbedtls_debug_print_msg2(int level,
+//                              const char *file, int line,
+//                              const char *format, ...)
+// {
+//     va_list argp;
+//     char str[DEBUG_BUF_SIZE];
+//     int ret = MBEDTLS_ERR_ERROR_CORRUPTION_DETECTED;
+//
+//     MBEDTLS_STATIC_ASSERT(DEBUG_BUF_SIZE >= 2, "DEBUG_BUF_SIZE too small");
+//
+//     if ( level > debug_threshold) {
+//         return;
+//     }
+//     va_start(argp, format);
+//     ret = mbedtls_vsnprintf(str, DEBUG_BUF_SIZE, format, argp);
+//     va_end(argp);
+//
+//     if (ret < 0) {
+//         ret = 0;
+//     } else {
+//         if (ret >= DEBUG_BUF_SIZE - 1) {
+//             ret = DEBUG_BUF_SIZE - 2;
+//         }
+//     }
+//     str[ret]     = '\n';
+//     str[ret + 1] = '\0';
+// }
 
 void mbedtls_debug_print_ret(const mbedtls_ssl_context *ssl, int level,
                              const char *file, int line,
@@ -102,10 +130,10 @@ void mbedtls_debug_print_ret(const mbedtls_ssl_context *ssl, int level,
      * the logs would be quickly flooded with WANT_READ, so ignore that.
      * Don't ignore WANT_WRITE however, since is is usually rare.
      */
-    if (ret == MBEDTLS_ERR_SSL_WANT_READ) {
-        return;
-    }
-
+    // if (ret == MBEDTLS_ERR_SSL_WANT_READ) {
+    //     return;
+    // }
+    //
     mbedtls_snprintf(str, sizeof(str), "%s() returned %d (-0x%04x)\n",
                      text, ret, (unsigned int) -ret);
 

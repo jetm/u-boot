@@ -25,8 +25,10 @@ mbedtls_lib_crypto-y := \
 	$(MBEDTLS_LIB_DIR)/aria.o \
 	$(MBEDTLS_LIB_DIR)/asn1parse.o \
 	$(MBEDTLS_LIB_DIR)/asn1write.o \
+	$(MBEDTLS_LIB_DIR)/arc4.o \
 	$(MBEDTLS_LIB_DIR)/base64.o \
 	$(MBEDTLS_LIB_DIR)/bignum.o \
+	$(MBEDTLS_LIB_DIR)/blowfish.o \
 	$(MBEDTLS_LIB_DIR)/camellia.o \
 	$(MBEDTLS_LIB_DIR)/ccm.o \
 	$(MBEDTLS_LIB_DIR)/chacha20.o \
@@ -102,4 +104,5 @@ mbedtls_lib_tls-y := \
 	$(MBEDTLS_LIB_DIR)/ssl_ticket.o \
 	$(MBEDTLS_LIB_DIR)/ssl_tls.o \
 	$(MBEDTLS_LIB_DIR)/ssl_tls13_keys.o \
+	$(MBEDTLS_LIB_DIR)/ssl_srv.o \
 	# This line is intentionally left blank

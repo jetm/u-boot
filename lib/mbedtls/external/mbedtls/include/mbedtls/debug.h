@@ -30,6 +30,10 @@
     mbedtls_debug_print_msg(ssl, level, __FILE__, __LINE__,    \
                             MBEDTLS_DEBUG_STRIP_PARENS args)
 
+#define MBEDTLS_SSL_DEBUG_MSG_LWIP(level, args)                    \
+    mbedtls_debug_print_msg2(level, __FILE__, __LINE__,    \
+                            MBEDTLS_DEBUG_STRIP_PARENS args)
+
 #define MBEDTLS_SSL_DEBUG_RET(level, text, ret)                \
     mbedtls_debug_print_ret(ssl, level, __FILE__, __LINE__, text, ret)
 
@@ -158,6 +162,10 @@ void mbedtls_debug_set_threshold(int threshold);
 void mbedtls_debug_print_msg(const mbedtls_ssl_context *ssl, int level,
                              const char *file, int line,
                              const char *format, ...) MBEDTLS_PRINTF_ATTRIBUTE(5, 6);
+
+// void mbedtls_debug_print_msg2(int level,
+//                              const char *file, int line,
+//                              const char *format, ...) MBEDTLS_PRINTF_ATTRIBUTE(5, 6);
 
 /**
  * \brief   Print the return value of a function to the debug output. This
