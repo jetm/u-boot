@@ -4,4 +4,6 @@ ccflags-y += -I$(srctree)/net/lwip/lwip-external/src/include
 ccflags-y += -I$(srctree)/net/lwip/lwip-external/src/include/lwip/apps
 
 obj-$(CONFIG_CMD_WGET) += ../../lwip-external/src/apps/http/http_client.o
+obj-$(CONFIG_CMD_WGET) += ../../lwip-external/src/apps/altcp_tls/altcp_tls_mbedtls.o
+obj-$(CONFIG_CMD_WGET) += ../../lwip-external/src/apps/altcp_tls/altcp_tls_mbedtls_mem.o
 obj-$(CONFIG_CMD_WGET) += lwip-wget.o
