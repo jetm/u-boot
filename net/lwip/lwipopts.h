@@ -41,18 +41,58 @@
 #define LWIP_ALTCP                      1
 #define LWIP_ALTCP_TLS                  1
 #define LWIP_ALTCP_TLS_MBEDTLS          1
-/* TCP WND must be at least 16 kb to match TLS record size
-   or you will get a warning "altcp_tls: TCP_WND is smaller than the RX decrypion buffer, connection RX might stall!" */
+
+// TCP WND must be at least 16 kb to match TLS record size
+// or you will get a warning:
+// "altcp_tls: TCP_WND is smaller than the RX decrypion buffer, connection RX might stall!"
 #undef TCP_WND
 #define TCP_WND  16384
+// #define LWIP_TCP_KEEPALIVE              1
 
 #define LWIP_DEBUG 1
+#define LWIP_DBG_MIN_LEVEL              LWIP_DBG_LEVEL_ALL
 #define LWIP_DBG_TYPES_ON               LWIP_DBG_ON
 #define API_LIB_DEBUG                   LWIP_DBG_ON
 #define API_MSG_DEBUG                   LWIP_DBG_ON
+#define AUTOIP_DEBUG                    LWIP_DBG_OFF
+#define DHCP6_DEBUG                     LWIP_DBG_OFF
+#define DHCP_DEBUG                      LWIP_DBG_OFF
+#define DNS_DEBUG                       LWIP_DBG_OFF
+#define ETHARP_DEBUG                    LWIP_DBG_ON
+#define ICMP_DEBUG                      LWIP_DBG_OFF
+#define IGMP_DEBUG                      LWIP_DBG_OFF
+#define INET_DEBUG                      LWIP_DBG_OFF
+#define IP6_DEBUG                       LWIP_DBG_OFF
+#define IP_DEBUG                        LWIP_DBG_ON
+#define IP_REASS_DEBUG                  LWIP_DBG_OFF
+#define LWIP_DBG_TYPES_ON               LWIP_DBG_ON
+#define MEMP_DEBUG                      LWIP_DBG_OFF
+#define MEM_DEBUG                       LWIP_DBG_OFF
+#define NETIF_DEBUG                     LWIP_DBG_ON
+#define PBUF_DEBUG                      LWIP_DBG_ON
+#define RAW_DEBUG                       LWIP_DBG_ON
+#define SLIP_DEBUG                      LWIP_DBG_OFF
+#define SOCKETS_DEBUG                   LWIP_DBG_ON
+#define SYS_DEBUG                       LWIP_DBG_ON
+#define TCPIP_DEBUG                     LWIP_DBG_ON
+#define TCP_CWND_DEBUG                  LWIP_DBG_ON
+#define TCP_DEBUG                       LWIP_DBG_ON
+#define TCP_FR_DEBUG                    LWIP_DBG_ON
+#define TCP_INPUT_DEBUG                 LWIP_DBG_ON
+#define TCP_OUTPUT_DEBUG                LWIP_DBG_OFF
+#define TCP_QLEN_DEBUG                  LWIP_DBG_ON
+#define TCP_RST_DEBUG                   LWIP_DBG_ON
+#define TCP_RTO_DEBUG                   LWIP_DBG_ON
+#define TCP_WND_DEBUG                   LWIP_DBG_ON
+#define TIMERS_DEBUG                    LWIP_DBG_ON
+#define UDP_DEBUG                       LWIP_DBG_OFF
+
 #define ALTCP_MBEDTLS_DEBUG             LWIP_DBG_ON
 #define ALTCP_MBEDTLS_LIB_DEBUG         LWIP_DBG_ON
 #define ALTCP_MBEDTLS_LIB_DEBUG_LEVEL_MIN             0
+
+#define LWIP_PLATFORM_DIAG(x) do {printf x;} while(0)
+#define TCP_WND_UPDATE_THRESHOLD   (TCP_WND / 8)
 
 /*
  * Include user defined options first. Anything not defined in these files

@@ -90,7 +90,7 @@ static int ssl_write_hostname_ext(mbedtls_ssl_context *ssl,
     if (ssl->hostname == NULL) {
         return 0;
     }
-    printf("Starting %s %d\n", __func__, __LINE__);
+    // printf("Starting %s %d\n", __func__, __LINE__);
 
     MBEDTLS_SSL_DEBUG_MSG(3,
                           ("client hello, adding server name extension: %s",
@@ -4262,7 +4262,7 @@ int mbedtls_ssl_handshake_client_step(mbedtls_ssl_context *ssl)
     }
 
     MBEDTLS_SSL_DEBUG_MSG(2, ("client state: %d", ssl->state));
-    printf("client state: %d %s %d\n", ssl->state, __func__, __LINE__);
+    // printf("client state: %d %s %d\n", ssl->state, __func__, __LINE__);
 
     if ((ret = mbedtls_ssl_flush_output(ssl)) != 0) {
         return ret;

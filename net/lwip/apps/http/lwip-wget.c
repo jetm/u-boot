@@ -151,7 +151,7 @@ int ulwip_wget(ulong addr, char *url)
 		if (!tls_allocator.arg)
 				printf("tls_allocator arg is null\n");
 
-		printf("Before httpc_get_file_dns\n");
+		// printf("Before httpc_get_file_dns\n");
 
 	err = httpc_get_file_dns(server_name, port, path, &settings,
 				 httpc_recv, NULL,  &connection);
