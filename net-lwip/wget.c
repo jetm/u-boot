@@ -15,6 +15,9 @@
 #define SERVER_NAME_SIZE 200
 #define HTTP_PORT_DEFAULT 80
 #define HTTPS_PORT_DEFAULT 443
+#define HTTP_SCHEME "http://"
+#define HTTPS_SCHEME "https://"
+
 #define PROGRESS_PRINT_STEP_BYTES (100 * 1024)
 
 static ulong daddr;
@@ -41,18 +44,18 @@ static int parse_url(char *url, char *host, u16 *port, char **path)
 {
 	char *p, *pp;
 	long lport;
-        bool https = false;
+    bool https = false;
 
-        p = strstr(url, "https://");
-        if (!p) {
-                p = strstr(url, "http://");
-                p += strlen("http://");
-                if (!p)
-                        return -ENOENT;
-        } else {
-                p += strlen("https://");
-                https = true;
-        }
+    p = strstr(url, HTTPS_SCHEME);
+    if (!p) {
+        p = strstr(url, HTTP_SCHEME);
+        p += strlen(HTTP_SCHEME);
+        if (!p)
+                return -ENOENT;
+    } else {
+        p += strlen(HTTPS_SCHEME);
+        https = true;
+    }
 
 	/* Parse hostname */
 	pp = strchr(p, ':');
@@ -77,7 +80,7 @@ static int parse_url(char *url, char *host, u16 *port, char **path)
 			return -EINVAL;
 		*port = (u16)lport;
 	} else if (https) {
-                *port = HTTPS_PORT_DEFAULT;
+        *port = HTTPS_PORT_DEFAULT;
 	} else {
 		*port = HTTP_PORT_DEFAULT;
 	}
@@ -168,16 +171,18 @@ static int wget_loop(struct udevice *udev, ulong dst_addr, char *uri)
 	conn.result_fn = httpc_result_cb;
 	ctx.start_time = get_timer(0);
 
-        mbedtls_debug_set_threshold(99);
-
+    if (port == HTTPS_PORT_DEFAULT) {
         altcp_allocator_t tls_allocator;
 
         tls_allocator.alloc = &altcp_tls_alloc;
         tls_allocator.arg = altcp_tls_create_config_client(NULL, 0);
-        conn.altcp_allocator = &tls_allocator;
 
         if (!tls_allocator.arg)
-                printf("tls_allocator arg is null\n");
+            printf("error: tls_allocator arg is null\n");
+
+        conn.altcp_allocator = &tls_allocator;
+    }
+
 
 	if (httpc_get_file_dns(server_name, port, path, &conn, httpc_recv_cb,
 			       &ctx, &state)) {
