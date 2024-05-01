@@ -51,7 +51,7 @@ static int parse_url(char *url, char *host, u16 *port, char **path)
         p = strstr(url, HTTP_SCHEME);
         p += strlen(HTTP_SCHEME);
         if (!p)
-                return -ENOENT;
+           return -ENOENT;
     } else {
         p += strlen(HTTPS_SCHEME);
         https = true;
@@ -89,6 +89,16 @@ static int parse_url(char *url, char *host, u16 *port, char **path)
 	*path = pp;
 
 	return 0;
+}
+
+bool wget_validate_uri(char *uri)
+{
+    if (strstr(uri, HTTP_SCHEME) || strstr(uri, HTTPS_SCHEME)) {
+        return true;
+    }
+
+    log_err("only http:// and https:// are supported\n");
+    return false;
 }
 
 static err_t httpc_recv_cb(void *arg, struct altcp_pcb *pcb, struct pbuf *pbuf,
@@ -182,7 +192,6 @@ static int wget_loop(struct udevice *udev, ulong dst_addr, char *uri)
 
         conn.altcp_allocator = &tls_allocator;
     }
-
 
 	if (httpc_get_file_dns(server_name, port, path, &conn, httpc_recv_cb,
 			       &ctx, &state)) {
