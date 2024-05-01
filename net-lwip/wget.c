@@ -202,3 +202,15 @@ int do_wget(struct cmd_tbl *cmdtp, int flag, int argc, char * const argv[])
 
 	return CMD_RET_FAILURE;
 }
+
+int wget_with_dns(ulong dst_addr, char *uri) {
+    int ret;
+    char *str_addr = NULL;
+
+    sprintf(str_addr, "0x%lx", dst_addr);
+
+    char *argv[] = { str_addr, uri};
+    ret = do_wget(NULL, 0, 2, argv);
+
+    return ret;
+}
