@@ -24,28 +24,24 @@ static ulong size;
 static ulong prevsize;
 #define PROGRESS_PRINT_STEP_BYTES (100 * 1024)
 static ulong start_time;
-static enum done_state {
-        NOT_DONE = 0,
-        SUCCESS = 1,
-        FAILURE = 2
-} done;
+static enum done_state { NOT_DONE = 0, SUCCESS = 1, FAILURE = 2 } done;
 
 static int parse_url(char *url, char *host, u16 *port, char **path)
 {
 	char *p, *pp;
 	long lport;
-    bool https = false;
+	bool https = false;
 
-    p = strstr(url, HTTPS_SCHEME);
-    if (!p) {
-        p = strstr(url, HTTP_SCHEME);
-        p += strlen(HTTP_SCHEME);
-        if (!p)
-           return -ENOENT;
-    } else {
-        p += strlen(HTTPS_SCHEME);
-        https = true;
-    }
+	p = strstr(url, HTTPS_SCHEME);
+	if (!p) {
+		p = strstr(url, HTTP_SCHEME);
+		p += strlen(HTTP_SCHEME);
+		if (!p)
+			return -ENOENT;
+	} else {
+		p += strlen(HTTPS_SCHEME);
+		https = true;
+	}
 
 	/* Parse hostname */
 	pp = strchr(p, ':');
@@ -70,7 +66,7 @@ static int parse_url(char *url, char *host, u16 *port, char **path)
 			return -EINVAL;
 		*port = (u16)lport;
 	} else if (https) {
-        *port = HTTPS_PORT_DEFAULT;
+		*port = HTTPS_PORT_DEFAULT;
 	} else {
 		*port = HTTP_PORT_DEFAULT;
 	}
@@ -83,12 +79,12 @@ static int parse_url(char *url, char *host, u16 *port, char **path)
 
 bool wget_validate_uri(char *uri)
 {
-    if (strstr(uri, HTTP_SCHEME) || strstr(uri, HTTPS_SCHEME)) {
-        return true;
-    }
+	if (strstr(uri, HTTP_SCHEME) || strstr(uri, HTTPS_SCHEME)) {
+		return true;
+	}
 
-    log_err("only http:// and https:// are supported\n");
-    return false;
+	log_err("only http:// and https:// are supported\n");
+	return false;
 }
 
 static err_t httpc_recv_cb(void *arg, struct altcp_pcb *pcb, struct pbuf *pbuf,
@@ -126,9 +122,9 @@ static void httpc_result_cb(void *arg, httpc_result_t httpc_result,
 	}
 
 	elapsed = get_timer(start_time);
-        log_info("\n%u bytes transferred in %lu ms (", rx_content_len,
-                 get_timer(start_time));
-        print_size(rx_content_len / elapsed * 1000, "/s)\n");
+	log_info("\n%u bytes transferred in %lu ms (", rx_content_len,
+		 get_timer(start_time));
+	print_size(rx_content_len / elapsed * 1000, "/s)\n");
 
 	if (env_set_hex("filesize", rx_content_len) ||
 	    env_set_hex("fileaddr", saved_daddr)) {
@@ -140,7 +136,7 @@ static void httpc_result_cb(void *arg, httpc_result_t httpc_result,
 	done = SUCCESS;
 }
 
-int do_wget(struct cmd_tbl *cmdtp, int flag, int argc, char * const argv[])
+int do_wget(struct cmd_tbl *cmdtp, int flag, int argc, char *const argv[])
 {
 	char server_name[SERVER_NAME_SIZE];
 	httpc_connection_t conn;
@@ -174,17 +170,17 @@ int do_wget(struct cmd_tbl *cmdtp, int flag, int argc, char * const argv[])
 	conn.result_fn = httpc_result_cb;
 	start_time = get_timer(0);
 
-    if (port == HTTPS_PORT_DEFAULT) {
-        altcp_allocator_t tls_allocator;
+	if (port == HTTPS_PORT_DEFAULT) {
+		altcp_allocator_t tls_allocator;
 
-        tls_allocator.alloc = &altcp_tls_alloc;
-        tls_allocator.arg = altcp_tls_create_config_client(NULL, 0);
+		tls_allocator.alloc = &altcp_tls_alloc;
+		tls_allocator.arg = altcp_tls_create_config_client(NULL, 0);
 
-        if (!tls_allocator.arg)
-            printf("error: tls_allocator arg is null\n");
+		if (!tls_allocator.arg)
+			printf("error: tls_allocator arg is null\n");
 
-        conn.altcp_allocator = &tls_allocator;
-    }
+		conn.altcp_allocator = &tls_allocator;
+	}
 
 	if (httpc_get_file_dns(server_name, port, path, &conn, httpc_recv_cb,
 			       NULL, &state))
@@ -203,14 +199,15 @@ int do_wget(struct cmd_tbl *cmdtp, int flag, int argc, char * const argv[])
 	return CMD_RET_FAILURE;
 }
 
-int wget_with_dns(ulong dst_addr, char *uri) {
-    int ret;
-    char *str_addr = NULL;
+int wget_with_dns(ulong dst_addr, char *uri)
+{
+	int ret;
+	char *str_addr = NULL;
 
-    sprintf(str_addr, "0x%lx", dst_addr);
+	sprintf(str_addr, "0x%lx", dst_addr);
 
-    char *argv[] = { str_addr, uri};
-    ret = do_wget(NULL, 0, 2, argv);
+	char *argv[] = { str_addr, uri };
+	ret = do_wget(NULL, 0, 2, argv);
 
-    return ret;
+	return ret;
 }
