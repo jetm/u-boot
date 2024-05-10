@@ -141,6 +141,7 @@
 #if defined(CONFIG_PROT_DHCP_LWIP)
 #define LWIP_DHCP                       1
 #define LWIP_DHCP_BOOTP_FILE		1
+#define LWIP_NETIF_HOSTNAME 1
 #else
 #define LWIP_DHCP			0
 #endif
@@ -156,6 +157,9 @@
 #if defined(CONFIG_PROT_DNS_LWIP)
 #define LWIP_DNS                        1
 #define DNS_TABLE_SIZE                  1
+
+// Use Google Public DNS servers
+#define DNS_SERVER_ADDRESS(ipaddr) IP4_ADDR(ipaddr, 8, 8, 8, 8)
 #else
 #define LWIP_DNS                        0
 #endif
@@ -207,5 +211,7 @@
 // "altcp_tls: TCP_WND is smaller than the RX decrypion buffer, connection RX might stall!"
 #undef TCP_WND
 #define TCP_WND  16384
+
+#define HTTPC_CLIENT_AGENT ""
 
 #endif /* LWIP_UBOOT_LWIPOPTS_H */

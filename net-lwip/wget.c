@@ -193,6 +193,10 @@ static int wget_loop(struct udevice *udev, ulong dst_addr, char *uri)
 		conn.altcp_allocator = &tls_allocator;
 	}
 
+#if defined(CONFIG_LWIP_DEBUG)
+	mbedtls_debug_set_threshold(99);
+#endif
+
 	if (httpc_get_file_dns(server_name, port, path, &conn, httpc_recv_cb,
 			       &ctx, &state)) {
 		net_lwip_remove_netif(netif);
