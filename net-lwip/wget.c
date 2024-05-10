@@ -182,6 +182,10 @@ int do_wget(struct cmd_tbl *cmdtp, int flag, int argc, char *const argv[])
 		conn.altcp_allocator = &tls_allocator;
 	}
 
+#if defined(CONFIG_LWIP_DEBUG)
+	mbedtls_debug_set_threshold(99);
+#endif
+
 	if (httpc_get_file_dns(server_name, port, path, &conn, httpc_recv_cb,
 			       NULL, &state))
 		return CMD_RET_FAILURE;

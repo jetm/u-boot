@@ -104,4 +104,3 @@ int do_dns(struct cmd_tbl *cmdtp, int flag, int argc, char *const argv[])
 
 	return CMD_RET_FAILURE;
 }
-
