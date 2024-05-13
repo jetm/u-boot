@@ -13,6 +13,8 @@ obj-y += \
 	lwip/src/api/sockets.o \
 	lwip/src/api/tcpip.o \
 	lwip/src/apps/http/http_client.o \
+	lwip/src/apps/altcp_tls/altcp_tls_mbedtls.o \
+	lwip/src/apps/altcp_tls/altcp_tls_mbedtls_mem.o \
 	lwip/src/apps/tftp/tftp.o \
 	lwip/src/core/altcp_alloc.o \
 	lwip/src/core/altcp.o \
