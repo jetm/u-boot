@@ -15,6 +15,8 @@ obj-y += \
 	api/sockets.o \
 	api/tcpip.o \
 	apps/http/http_client.o \
+	apps/altcp_tls/altcp_tls_mbedtls.o \
+	apps/altcp_tls/altcp_tls_mbedtls_mem.o \
 	apps/tftp/tftp.o \
 	core/altcp_alloc.o \
 	core/altcp.o \
