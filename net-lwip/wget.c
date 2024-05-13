@@ -9,10 +9,18 @@
 #include <lwip/timeouts.h>
 #include <net.h>
 #include <time.h>
+#include "lwip/altcp_tls.h"
+#include "mbedtls/debug.h"
 
 #define SERVER_NAME_SIZE 200
 #define HTTP_PORT_DEFAULT 80
+#define HTTPS_PORT_DEFAULT 443
 #define PROGRESS_PRINT_STEP_BYTES (100 * 1024)
+
+static ulong daddr;
+static ulong saved_daddr;
+static ulong size;
+static ulong prevsize;
 
 enum done_state {
         NOT_DONE = 0,
@@ -33,12 +41,18 @@ static int parse_url(char *url, char *host, u16 *port, char **path)
 {
 	char *p, *pp;
 	long lport;
+        bool https = false;
 
-	p = strstr(url, "http://");
-	if (!p)
-		return -EINVAL;
-
-	p += strlen("http://");
+        p = strstr(url, "https://");
+        if (!p) {
+                p = strstr(url, "http://");
+                p += strlen("http://");
+                if (!p)
+                        return -ENOENT;
+        } else {
+                p += strlen("https://");
+                https = true;
+        }
 
 	/* Parse hostname */
 	pp = strchr(p, ':');
@@ -62,6 +76,8 @@ static int parse_url(char *url, char *host, u16 *port, char **path)
 		if (lport > 65535)
 			return -EINVAL;
 		*port = (u16)lport;
+	} else if (https) {
+                *port = HTTPS_PORT_DEFAULT;
 	} else {
 		*port = HTTP_PORT_DEFAULT;
 	}
@@ -151,6 +167,18 @@ static int wget_loop(struct udevice *udev, ulong dst_addr, char *uri)
 	memset(&conn, 0, sizeof(conn));
 	conn.result_fn = httpc_result_cb;
 	ctx.start_time = get_timer(0);
+
+        mbedtls_debug_set_threshold(99);
+
+        altcp_allocator_t tls_allocator;
+
+        tls_allocator.alloc = &altcp_tls_alloc;
+        tls_allocator.arg = altcp_tls_create_config_client(NULL, 0);
+        conn.altcp_allocator = &tls_allocator;
+
+        if (!tls_allocator.arg)
+                printf("tls_allocator arg is null\n");
+
 	if (httpc_get_file_dns(server_name, port, path, &conn, httpc_recv_cb,
 			       &ctx, &state)) {
 		net_lwip_remove_netif(netif);
