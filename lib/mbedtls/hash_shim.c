@@ -12,6 +12,7 @@
 #include <mbedtls/sha256.h>
 #include <mbedtls/sha512.h>
 #include <mbedtls/md5.h>
+#include "rand.h"
 
 void sha1_starts_mb(sha1_context *ctx)
 {
@@ -116,3 +117,20 @@ md5_wd_mb(const unsigned char *input, unsigned int len,
 	mbedtls_md5(input, len, output);
 }
 
+int mbedtls_hardware_poll( void * data,
+                           unsigned char * output,
+                           size_t len,
+                           size_t * olen )
+{
+		uint32_t random_number = rand();
+
+    ((void)data);
+    *olen = 0;
+
+    if(( len < sizeof(uint32_t))) { return 0; }
+
+    memcpy(output, &random_number, sizeof(uint32_t));
+    *olen = sizeof(uint32_t);
+
+    return 0;
+}
