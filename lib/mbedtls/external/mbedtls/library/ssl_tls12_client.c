@@ -17,6 +17,7 @@
 #include "debug_internal.h"
 #include "mbedtls/error.h"
 #include "mbedtls/constant_time.h"
+#include "pk_internal.h"
 
 #if defined(MBEDTLS_USE_PSA_CRYPTO)
 #include "psa_util_internal.h"
@@ -1803,9 +1804,11 @@ static int ssl_check_server_ecdh_params(const mbedtls_ssl_context *ssl)
     MBEDTLS_SSL_DEBUG_MSG(2, ("ECDH curve: %s",
                               mbedtls_ssl_get_curve_name_from_tls_id(tls_id)));
 
+#if defined(MBEDTLS_PK_HAVE_ECC_KEYS)
     if (mbedtls_ssl_check_curve(ssl, grp_id) != 0) {
         return -1;
     }
+#endif
 
     MBEDTLS_SSL_DEBUG_ECDH(3, &ssl->handshake->ecdh_ctx,
                            MBEDTLS_DEBUG_ECDH_QP);
