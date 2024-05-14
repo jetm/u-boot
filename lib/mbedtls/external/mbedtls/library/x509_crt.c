@@ -1764,7 +1764,7 @@ int mbedtls_x509_crt_info(char *buf, size_t size, const char *prefix,
         return (int) (size - n);
     }
 
-    ret = mbedtls_snprintf(p, n, "%scert. version     : %d\n",
+    ret = mbedtls_snprintf(p, n, "%scert. version     : %d",
                            prefix, crt->version);
     MBEDTLS_X509_SAFE_SNPRINTF;
     ret = mbedtls_snprintf(p, n, "%sserial number     : ",
@@ -1774,31 +1774,31 @@ int mbedtls_x509_crt_info(char *buf, size_t size, const char *prefix,
     ret = mbedtls_x509_serial_gets(p, n, &crt->serial);
     MBEDTLS_X509_SAFE_SNPRINTF;
 
-    ret = mbedtls_snprintf(p, n, "\n%sissuer name       : ", prefix);
+    ret = mbedtls_snprintf(p, n, "%sissuer name       : ", prefix);
     MBEDTLS_X509_SAFE_SNPRINTF;
     ret = mbedtls_x509_dn_gets(p, n, &crt->issuer);
     MBEDTLS_X509_SAFE_SNPRINTF;
 
-    ret = mbedtls_snprintf(p, n, "\n%ssubject name      : ", prefix);
+    ret = mbedtls_snprintf(p, n, "%ssubject name      : ", prefix);
     MBEDTLS_X509_SAFE_SNPRINTF;
     ret = mbedtls_x509_dn_gets(p, n, &crt->subject);
     MBEDTLS_X509_SAFE_SNPRINTF;
 
-    ret = mbedtls_snprintf(p, n, "\n%sissued  on        : " \
+    ret = mbedtls_snprintf(p, n, "%sissued  on        : " \
                                  "%04d-%02d-%02d %02d:%02d:%02d", prefix,
                            crt->valid_from.year, crt->valid_from.mon,
                            crt->valid_from.day,  crt->valid_from.hour,
                            crt->valid_from.min,  crt->valid_from.sec);
     MBEDTLS_X509_SAFE_SNPRINTF;
 
-    ret = mbedtls_snprintf(p, n, "\n%sexpires on        : " \
+    ret = mbedtls_snprintf(p, n, "%sexpires on        : " \
                                  "%04d-%02d-%02d %02d:%02d:%02d", prefix,
                            crt->valid_to.year, crt->valid_to.mon,
                            crt->valid_to.day,  crt->valid_to.hour,
                            crt->valid_to.min,  crt->valid_to.sec);
     MBEDTLS_X509_SAFE_SNPRINTF;
 
-    ret = mbedtls_snprintf(p, n, "\n%ssigned using      : ", prefix);
+    ret = mbedtls_snprintf(p, n, "%ssigned using      : ", prefix);
     MBEDTLS_X509_SAFE_SNPRINTF;
 
     ret = mbedtls_x509_sig_alg_gets(p, n, &crt->sig_oid, crt->sig_pk,
@@ -1811,7 +1811,7 @@ int mbedtls_x509_crt_info(char *buf, size_t size, const char *prefix,
         return ret;
     }
 
-    ret = mbedtls_snprintf(p, n, "\n%s%-" BC "s: %d bits", prefix, key_size_str,
+    ret = mbedtls_snprintf(p, n, "%s%-" BC "s: %d bits", prefix, key_size_str,
                            (int) mbedtls_pk_get_bitlen(&crt->pk));
     MBEDTLS_X509_SAFE_SNPRINTF;
 
@@ -1820,7 +1820,7 @@ int mbedtls_x509_crt_info(char *buf, size_t size, const char *prefix,
      */
 
     if (crt->ext_types & MBEDTLS_X509_EXT_BASIC_CONSTRAINTS) {
-        ret = mbedtls_snprintf(p, n, "\n%sbasic constraints : CA=%s", prefix,
+        ret = mbedtls_snprintf(p, n, "%sbasic constraints : CA=%s", prefix,
                                crt->ca_istrue ? "true" : "false");
         MBEDTLS_X509_SAFE_SNPRINTF;
 
@@ -1831,7 +1831,7 @@ int mbedtls_x509_crt_info(char *buf, size_t size, const char *prefix,
     }
 
     if (crt->ext_types & MBEDTLS_X509_EXT_SUBJECT_ALT_NAME) {
-        ret = mbedtls_snprintf(p, n, "\n%ssubject alt name  :", prefix);
+        ret = mbedtls_snprintf(p, n, "%ssubject alt name  :", prefix);
         MBEDTLS_X509_SAFE_SNPRINTF;
 
         if ((ret = mbedtls_x509_info_subject_alt_name(&p, &n,
@@ -1842,7 +1842,7 @@ int mbedtls_x509_crt_info(char *buf, size_t size, const char *prefix,
     }
 
     if (crt->ext_types & MBEDTLS_X509_EXT_NS_CERT_TYPE) {
-        ret = mbedtls_snprintf(p, n, "\n%scert. type        : ", prefix);
+        ret = mbedtls_snprintf(p, n, "%scert. type        : ", prefix);
         MBEDTLS_X509_SAFE_SNPRINTF;
 
         if ((ret = mbedtls_x509_info_cert_type(&p, &n, crt->ns_cert_type)) != 0) {
@@ -1851,7 +1851,7 @@ int mbedtls_x509_crt_info(char *buf, size_t size, const char *prefix,
     }
 
     if (crt->ext_types & MBEDTLS_X509_EXT_KEY_USAGE) {
-        ret = mbedtls_snprintf(p, n, "\n%skey usage         : ", prefix);
+        ret = mbedtls_snprintf(p, n, "%skey usage         : ", prefix);
         MBEDTLS_X509_SAFE_SNPRINTF;
 
         if ((ret = mbedtls_x509_info_key_usage(&p, &n, crt->key_usage)) != 0) {
@@ -1860,7 +1860,7 @@ int mbedtls_x509_crt_info(char *buf, size_t size, const char *prefix,
     }
 
     if (crt->ext_types & MBEDTLS_X509_EXT_EXTENDED_KEY_USAGE) {
-        ret = mbedtls_snprintf(p, n, "\n%sext key usage     : ", prefix);
+        ret = mbedtls_snprintf(p, n, "%sext key usage     : ", prefix);
         MBEDTLS_X509_SAFE_SNPRINTF;
 
         if ((ret = x509_info_ext_key_usage(&p, &n,
@@ -1870,7 +1870,7 @@ int mbedtls_x509_crt_info(char *buf, size_t size, const char *prefix,
     }
 
     if (crt->ext_types & MBEDTLS_OID_X509_EXT_CERTIFICATE_POLICIES) {
-        ret = mbedtls_snprintf(p, n, "\n%scertificate policies : ", prefix);
+        ret = mbedtls_snprintf(p, n, "%scertificate policies : ", prefix);
         MBEDTLS_X509_SAFE_SNPRINTF;
 
         if ((ret = x509_info_cert_policies(&p, &n,
@@ -1879,7 +1879,7 @@ int mbedtls_x509_crt_info(char *buf, size_t size, const char *prefix,
         }
     }
 
-    ret = mbedtls_snprintf(p, n, "\n");
+    ret = mbedtls_snprintf(p, n, "");
     MBEDTLS_X509_SAFE_SNPRINTF;
 
     return (int) (size - n);
