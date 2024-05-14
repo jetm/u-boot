@@ -198,4 +198,14 @@
 #define MEMP_MEM_INIT			1
 #define MEM_LIBC_MALLOC			1
 
+#define LWIP_TCP                        1
+#define LWIP_ALTCP                      1
+#define LWIP_ALTCP_TLS                  1
+#define LWIP_ALTCP_TLS_MBEDTLS          1
+
+// TCP WND must be at least 16 kb to match TLS record size. Silent warning
+// "altcp_tls: TCP_WND is smaller than the RX decrypion buffer, connection RX might stall!"
+#undef TCP_WND
+#define TCP_WND  16384
+
 #endif /* LWIP_UBOOT_LWIPOPTS_H */
