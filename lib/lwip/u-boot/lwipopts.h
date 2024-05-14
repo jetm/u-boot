@@ -42,6 +42,10 @@
 #define DNS_DEBUG                       LWIP_DBG_ON
 #define IP6_DEBUG                       LWIP_DBG_OFF
 #define DHCP6_DEBUG                     LWIP_DBG_OFF
+#define ALTCP_MBEDTLS_DEBUG             LWIP_DBG_ON
+#define ALTCP_MBEDTLS_LIB_DEBUG         LWIP_DBG_ON
+#define ALTCP_MBEDTLS_LIB_DEBUG_LEVEL_MIN             0
+#define LWIP_PLATFORM_DIAG(x) do {printf x;} while(0)
 #else
 #define LWIP_DBG_MIN_LEVEL              LWIP_DBG_LEVEL_ALL
 #define LWIP_DBG_TYPES_ON               LWIP_DBG_OFF
