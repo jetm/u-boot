@@ -149,7 +149,7 @@
  * mbedtls_platform_gmtime_r() at compile-time by using the macro
  * MBEDTLS_PLATFORM_GMTIME_R_ALT.
  */
-//#define MBEDTLS_HAVE_TIME_DATE
+// #define MBEDTLS_HAVE_TIME_DATE
 
 /**
  * \def MBEDTLS_PLATFORM_MEMORY
@@ -205,7 +205,7 @@
  *
  * Enable this layer to allow use of alternative memory allocators.
  */
-//#define MBEDTLS_PLATFORM_MEMORY
+// #define MBEDTLS_PLATFORM_MEMORY
 
 /**
  * \def MBEDTLS_PLATFORM_NO_STD_FUNCTIONS
@@ -277,7 +277,7 @@
  * unconditionally use the implementation for mbedtls_platform_gmtime_r()
  * supplied at compile time.
  */
-//#define MBEDTLS_PLATFORM_GMTIME_R_ALT
+// #define MBEDTLS_PLATFORM_GMTIME_R_ALT
 
 /**
  * Uncomment the macro to let Mbed TLS use your alternate implementation of
@@ -710,7 +710,7 @@
  *
  * Uncomment this macro to enable the NULL cipher and ciphersuites
  */
-//#define MBEDTLS_CIPHER_NULL_CIPHER
+// #define MBEDTLS_CIPHER_NULL_CIPHER
 
 /**
  * \def MBEDTLS_CIPHER_PADDING_PKCS7
@@ -1183,7 +1183,7 @@
  *
  * Enable functions that use the filesystem.
  */
-//#define MBEDTLS_FS_IO
+// #define MBEDTLS_FS_IO
 
 /**
  * \def MBEDTLS_NO_DEFAULT_ENTROPY_SOURCES
@@ -1250,7 +1250,7 @@
  * \note The entropy collector will write to the seed file before entropy is
  *       given to an external source, to update it.
  */
-//#define MBEDTLS_ENTROPY_NV_SEED
+// #define MBEDTLS_ENTROPY_NV_SEED
 
 /* MBEDTLS_PSA_CRYPTO_KEY_ID_ENCODES_OWNER
  *
@@ -1337,7 +1337,7 @@
  * \warning This interface is experimental and may change or be removed
  * without notice.
  */
-//#define MBEDTLS_PSA_CRYPTO_BUILTIN_KEYS
+// #define MBEDTLS_PSA_CRYPTO_BUILTIN_KEYS
 
 /** \def MBEDTLS_PSA_CRYPTO_CLIENT
  *
@@ -1353,7 +1353,7 @@
  * \warning This interface is experimental and may change or be removed
  * without notice.
  */
-//#define MBEDTLS_PSA_CRYPTO_CLIENT
+// #define MBEDTLS_PSA_CRYPTO_CLIENT
 
 /** \def MBEDTLS_PSA_CRYPTO_EXTERNAL_RNG
  *
@@ -1467,6 +1467,26 @@
  *
  */
 //#define MBEDTLS_PSA_INJECT_ENTROPY
+
+/**
+ * \def MBEDTLS_PSA_ASSUME_EXCLUSIVE_BUFFERS
+ *
+ * Assume all buffers passed to PSA functions are owned exclusively by the
+ * PSA function and are not stored in shared memory.
+ *
+ * This option may be enabled if all buffers passed to any PSA function reside
+ * in memory that is accessible only to the PSA function during its execution.
+ *
+ * This option MUST be disabled whenever buffer arguments are in memory shared
+ * with an untrusted party, for example where arguments to PSA calls are passed
+ * across a trust boundary.
+ *
+ * \note Enabling this option reduces memory usage and code size.
+ *
+ * \note Enabling this option causes overlap of input and output buffers
+ *       not to be supported by PSA functions.
+ */
+//#define MBEDTLS_PSA_ASSUME_EXCLUSIVE_BUFFERS
 
 /**
  * \def MBEDTLS_RSA_NO_CRT
@@ -1723,9 +1743,6 @@
  *
  * Enable support for RFC 8449 record_size_limit extension in SSL (TLS 1.3 only).
  *
- * \warning This extension is currently in development and must NOT be used except
- *          for testing purposes.
- *
  * Requires: MBEDTLS_SSL_PROTO_TLS1_3
  *
  * Uncomment this macro to enable support for the record_size_limit extension
@@ -1795,7 +1812,7 @@
  * effect on the build.
  *
  */
-//#define MBEDTLS_SSL_TLS1_3_COMPATIBILITY_MODE
+// #define MBEDTLS_SSL_TLS1_3_COMPATIBILITY_MODE
 
 /**
  * \def MBEDTLS_SSL_TLS1_3_KEY_EXCHANGE_MODE_PSK_ENABLED
@@ -1852,9 +1869,6 @@
  *
  * Comment this to disable support for early data. If MBEDTLS_SSL_PROTO_TLS1_3
  * is not enabled, this option does not have any effect on the build.
- *
- * This feature is experimental, not completed and thus not ready for
- * production.
  *
  * \note The maximum amount of early data can be set with
  *       MBEDTLS_SSL_MAX_EARLY_DATA_SIZE.
@@ -1946,7 +1960,7 @@
  *
  * Uncomment this to enable support for use_srtp extension.
  */
-//#define MBEDTLS_SSL_DTLS_SRTP
+// #define MBEDTLS_SSL_DTLS_SRTP
 
 /**
  * \def MBEDTLS_SSL_DTLS_CLIENT_PORT_REUSE
@@ -2053,7 +2067,7 @@
  *
  * Uncomment to enable invasive tests.
  */
-//#define MBEDTLS_TEST_HOOKS
+// #define MBEDTLS_TEST_HOOKS
 
 /**
  * \def MBEDTLS_THREADING_ALT
@@ -2075,7 +2089,7 @@
  *
  * Uncomment this to enable pthread mutexes.
  */
-//#define MBEDTLS_THREADING_PTHREAD
+// #define MBEDTLS_THREADING_PTHREAD
 
 /**
  * \def MBEDTLS_USE_PSA_CRYPTO
@@ -2105,7 +2119,7 @@
  *
  * Uncomment this to enable internal use of PSA Crypto and new associated APIs.
  */
-//#define MBEDTLS_USE_PSA_CRYPTO
+// #define MBEDTLS_USE_PSA_CRYPTO
 
 /**
  * \def MBEDTLS_PSA_CRYPTO_CONFIG
@@ -2137,7 +2151,7 @@
  *          production, as long as you accept that you may need to make
  *          minor changes to psa/crypto_config.h when upgrading Mbed TLS.
  */
-//#define MBEDTLS_PSA_CRYPTO_CONFIG
+// #define MBEDTLS_PSA_CRYPTO_CONFIG
 
 /**
  * \def MBEDTLS_VERSION_FEATURES
@@ -2190,6 +2204,8 @@
  * Enable parsing and verification of X.509 certificates, CRLs and CSRS
  * signed with RSASSA-PSS (aka PKCS#1 v2.1).
  *
+ * Requires: MBEDTLS_PKCS1_V21
+ *
  * Comment this macro to disallow using RSASSA-PSS in certificates.
  */
 #define MBEDTLS_X509_RSASSA_PSS_SUPPORT
@@ -2208,7 +2224,7 @@
  * Enable AES-NI support on x86-64 or x86-32.
  *
  * \note AESNI is only supported with certain compilers and target options:
- * - Visual Studio 2013: supported.
+ * - Visual Studio: supported
  * - GCC, x86-64, target not explicitly supporting AESNI:
  *   requires MBEDTLS_HAVE_ASM.
  * - GCC, x86-32, target not explicitly supporting AESNI:
@@ -2237,7 +2253,7 @@
 /**
  * \def MBEDTLS_AESCE_C
  *
- * Enable AES cryptographic extension support on 64-bit Arm.
+ * Enable AES cryptographic extension support on Armv8.
  *
  * Module:  library/aesce.c
  * Caller:  library/aes.c
@@ -2248,15 +2264,17 @@
  *          system, Armv8-A Cryptographic Extensions must be supported by
  *          the CPU when this option is enabled.
  *
- * \note    Minimum compiler versions for this feature are Clang 4.0,
- *          armclang 6.6, GCC 6.0 or MSVC 2019 version 16.11.2.
+ * \note    Minimum compiler versions for this feature when targeting aarch64
+ *          are Clang 4.0; armclang 6.6; GCC 6.0; or MSVC 2019 version 16.11.2.
+ *          Minimum compiler versions for this feature when targeting 32-bit
+ *          Arm or Thumb are Clang 11.0; armclang 6.20; or GCC 6.0.
  *
  * \note \c CFLAGS must be set to a minimum of \c -march=armv8-a+crypto for
  * armclang <= 6.9
  *
- * This module adds support for the AES Armv8-A Cryptographic Extensions on Aarch64 systems.
+ * This module adds support for the AES Armv8-A Cryptographic Extensions on Armv8 systems.
  */
-//#define MBEDTLS_AESCE_C
+// #define MBEDTLS_AESCE_C
 
 /**
  * \def MBEDTLS_AES_C
@@ -2372,6 +2390,28 @@
  * This module is required for PEM support (required by X.509).
  */
 // #define MBEDTLS_BASE64_C
+
+/**
+ * \def MBEDTLS_BLOCK_CIPHER_NO_DECRYPT
+ *
+ * Remove decryption operation for AES, ARIA and Camellia block cipher.
+ *
+ * \note  This feature is incompatible with insecure block cipher,
+ *        MBEDTLS_DES_C, and cipher modes which always require decryption
+ *        operation, MBEDTLS_CIPHER_MODE_CBC, MBEDTLS_CIPHER_MODE_XTS and
+ *        MBEDTLS_NIST_KW_C. When #MBEDTLS_PSA_CRYPTO_CONFIG is enabled,
+ *        this feature is incompatible with following supported PSA equivalence,
+ *        PSA_WANT_ALG_ECB_NO_PADDING, PSA_WANT_ALG_CBC_NO_PADDING,
+ *        PSA_WANT_ALG_CBC_PKCS7 and PSA_WANT_KEY_TYPE_DES.
+ *
+ * Module:  library/aes.c
+ *          library/aesce.c
+ *          library/aesni.c
+ *          library/aria.c
+ *          library/camellia.c
+ *          library/cipher.c
+ */
+//#define MBEDTLS_BLOCK_CIPHER_NO_DECRYPT
 
 /**
  * \def MBEDTLS_BIGNUM_C
@@ -2552,6 +2592,8 @@
  *          library/ssl_ciphersuites.c
  *          library/ssl_msg.c
  *          library/ssl_ticket.c (unless MBEDTLS_USE_PSA_CRYPTO is enabled)
+ * Auto-enabled by: MBEDTLS_PSA_CRYPTO_C depending on which ciphers are enabled
+ *                  (see the documentation of that option for details).
  *
  * Uncomment to enable generic cipher wrappers.
  */
@@ -2582,6 +2624,13 @@
  * The CTR_DRBG generator uses AES-256 by default.
  * To use AES-128 instead, enable \c MBEDTLS_CTR_DRBG_USE_128_BIT_KEY above.
  *
+ * AES support can either be achived through builtin (MBEDTLS_AES_C) or PSA.
+ * Builtin is the default option when MBEDTLS_AES_C is defined otherwise PSA
+ * is used.
+ *
+ * \warning When using PSA, the user should call `psa_crypto_init()` before
+ *          using any CTR_DRBG operation (except `mbedtls_ctr_drbg_init()`).
+ *
  * \note AES-128 will be used if \c MBEDTLS_AES_ONLY_128_BIT_KEY_LENGTH is set.
  *
  * \note To achieve a 256-bit security strength with CTR_DRBG,
@@ -2591,7 +2640,9 @@
  * Module:  library/ctr_drbg.c
  * Caller:
  *
- * Requires: MBEDTLS_AES_C
+ * Requires: MBEDTLS_AES_C or
+ *           (PSA_WANT_KEY_TYPE_AES and PSA_WANT_ALG_ECB_NO_PADDING and
+ *            MBEDTLS_PSA_CRYPTO_C)
  *
  * This module provides the CTR_DRBG AES random number generator.
  */
@@ -2763,6 +2814,22 @@
 // #define MBEDTLS_GCM_C
 
 /**
+ * \def MBEDTLS_GCM_LARGE_TABLE
+ *
+ * Enable large pre-computed tables for  Galois/Counter Mode (GCM).
+ * Can significantly increase throughput on systems without GCM hardware
+ * acceleration (e.g., AESNI, AESCE).
+ *
+ * The mbedtls_gcm_context size will increase by 3840 bytes.
+ * The code size will increase by roughly 344 bytes.
+ *
+ * Module:  library/gcm.c
+ *
+ * Requires: MBEDTLS_GCM_C
+ */
+#define MBEDTLS_GCM_LARGE_TABLE
+
+/**
  * \def MBEDTLS_HKDF_C
  *
  * Enable the HKDF algorithm (RFC 5869).
@@ -2919,7 +2986,7 @@
  *
  * This module provides networking routines.
  */
-//#define MBEDTLS_NET_C
+// #define MBEDTLS_NET_C
 
 /**
  * \def MBEDTLS_OID_C
@@ -3023,7 +3090,7 @@
  * Caller:  library/x509_crt.c
  *          library/x509_csr.c
  *
- * Requires: MBEDTLS_PK_C
+ * Requires: MBEDTLS_ASN1_PARSE_C, MBEDTLS_OID_C, MBEDTLS_PK_C
  *
  * Uncomment to enable generic public key parse functions.
  */
@@ -3037,7 +3104,7 @@
  * Module:  library/pkwrite.c
  * Caller:  library/x509write.c
  *
- * Requires: MBEDTLS_PK_C
+ * Requires: MBEDTLS_ASN1_WRITE_C, MBEDTLS_OID_C, MBEDTLS_PK_C
  *
  * Uncomment to enable generic public key write functions.
  */
@@ -3050,7 +3117,6 @@
  *
  * Module:  library/pkcs5.c
  *
- * Requires: MBEDTLS_CIPHER_C
  * Auto-enables: MBEDTLS_MD_C
  *
  * \warning If using a hash that is only provided by PSA drivers, you must
@@ -3085,8 +3151,8 @@
  * Module:  library/pkcs12.c
  * Caller:  library/pkparse.c
  *
- * Requires: MBEDTLS_ASN1_PARSE_C, MBEDTLS_CIPHER_C and either
- * MBEDTLS_MD_C or MBEDTLS_PSA_CRYPTO_C.
+ * Requires: MBEDTLS_ASN1_PARSE_C and either MBEDTLS_MD_C or
+ *           MBEDTLS_PSA_CRYPTO_C.
  *
  * \warning If using a hash that is only provided by PSA drivers, you must
  * call psa_crypto_init() before doing any PKCS12 operations.
@@ -3132,11 +3198,12 @@
  *
  * Module:  library/psa_crypto.c
  *
- * Requires: MBEDTLS_CIPHER_C,
- *           either MBEDTLS_CTR_DRBG_C and MBEDTLS_ENTROPY_C,
+ * Requires: either MBEDTLS_CTR_DRBG_C and MBEDTLS_ENTROPY_C,
  *           or MBEDTLS_HMAC_DRBG_C and MBEDTLS_ENTROPY_C,
  *           or MBEDTLS_PSA_CRYPTO_EXTERNAL_RNG.
- *
+ * Auto-enables: MBEDTLS_CIPHER_C if any unauthenticated (ie, non-AEAD) cipher
+ *               is enabled in PSA (unless it's fully accelerated, see
+ *               docs/driver-only-builds.md about that).
  */
 //#define MBEDTLS_PSA_CRYPTO_C
 
@@ -3149,12 +3216,15 @@
  * \deprecated This feature is deprecated. Please switch to the PSA driver
  *             interface.
  *
+ * \warning    This feature is not thread-safe, and should not be used in a
+ *             multi-threaded environment.
+ *
  * Module:  library/psa_crypto_se.c
  *
  * Requires: MBEDTLS_PSA_CRYPTO_C, MBEDTLS_PSA_CRYPTO_STORAGE_C
  *
  */
-//#define MBEDTLS_PSA_CRYPTO_SE_C
+// #define MBEDTLS_PSA_CRYPTO_SE_C
 
 /**
  * \def MBEDTLS_PSA_CRYPTO_STORAGE_C
@@ -3167,7 +3237,7 @@
  *           either MBEDTLS_PSA_ITS_FILE_C or a native implementation of
  *           the PSA ITS interface
  */
-//#define MBEDTLS_PSA_CRYPTO_STORAGE_C
+// #define MBEDTLS_PSA_CRYPTO_STORAGE_C
 
 /**
  * \def MBEDTLS_PSA_ITS_FILE_C
@@ -3179,7 +3249,7 @@
  *
  * Requires: MBEDTLS_FS_IO
  */
-//#define MBEDTLS_PSA_ITS_FILE_C
+// #define MBEDTLS_PSA_ITS_FILE_C
 
 /**
  * \def MBEDTLS_RIPEMD160_C
@@ -3266,14 +3336,14 @@
 #endif
 
 /**
- * \def MBEDTLS_SHA256_USE_A64_CRYPTO_IF_PRESENT
+ * \def MBEDTLS_SHA256_USE_ARMV8_A_CRYPTO_IF_PRESENT
  *
  * Enable acceleration of the SHA-256 and SHA-224 cryptographic hash algorithms
  * with the ARMv8 cryptographic extensions if they are available at runtime.
  * If not, the library will fall back to the C implementation.
  *
- * \note If MBEDTLS_SHA256_USE_A64_CRYPTO_IF_PRESENT is defined when building
- * for a non-Aarch64 build it will be silently ignored.
+ * \note If MBEDTLS_SHA256_USE_ARMV8_A_CRYPTO_IF_PRESENT is defined when building
+ * for a non-Armv8-A build it will be silently ignored.
  *
  * \note    Minimum compiler versions for this feature are Clang 4.0,
  * armclang 6.6 or GCC 6.0.
@@ -3281,27 +3351,40 @@
  * \note \c CFLAGS must be set to a minimum of \c -march=armv8-a+crypto for
  * armclang <= 6.9
  *
- * \warning MBEDTLS_SHA256_USE_A64_CRYPTO_IF_PRESENT cannot be defined at the
- * same time as MBEDTLS_SHA256_USE_A64_CRYPTO_ONLY.
+ * \note This was previously known as MBEDTLS_SHA256_USE_A64_CRYPTO_IF_PRESENT.
+ * That name is deprecated, but may still be used as an alternative form for this
+ * option.
+ *
+ * \warning MBEDTLS_SHA256_USE_ARMV8_A_CRYPTO_IF_PRESENT cannot be defined at the
+ * same time as MBEDTLS_SHA256_USE_ARMV8_A_CRYPTO_ONLY.
  *
  * Requires: MBEDTLS_SHA256_C.
  *
  * Module:  library/sha256.c
  *
- * Uncomment to have the library check for the A64 SHA-256 crypto extensions
+ * Uncomment to have the library check for the Armv8-A SHA-256 crypto extensions
  * and use them if available.
+ */
+// #define MBEDTLS_SHA256_USE_ARMV8_A_CRYPTO_IF_PRESENT
+
+/**
+ * \def MBEDTLS_SHA256_USE_A64_CRYPTO_IF_PRESENT
+ *
+ * \deprecated This is now known as MBEDTLS_SHA256_USE_ARMV8_A_CRYPTO_IF_PRESENT.
+ * This name is now deprecated, but may still be used as an alternative form for
+ * this option.
  */
 //#define MBEDTLS_SHA256_USE_A64_CRYPTO_IF_PRESENT
 
 /**
- * \def MBEDTLS_SHA256_USE_A64_CRYPTO_ONLY
+ * \def MBEDTLS_SHA256_USE_ARMV8_A_CRYPTO_ONLY
  *
  * Enable acceleration of the SHA-256 and SHA-224 cryptographic hash algorithms
  * with the ARMv8 cryptographic extensions, which must be available at runtime
  * or else an illegal instruction fault will occur.
  *
  * \note This allows builds with a smaller code size than with
- * MBEDTLS_SHA256_USE_A64_CRYPTO_IF_PRESENT
+ * MBEDTLS_SHA256_USE_ARMV8_A_CRYPTO_IF_PRESENT
  *
  * \note    Minimum compiler versions for this feature are Clang 4.0,
  * armclang 6.6 or GCC 6.0.
@@ -3309,15 +3392,28 @@
  * \note \c CFLAGS must be set to a minimum of \c -march=armv8-a+crypto for
  * armclang <= 6.9
  *
- * \warning MBEDTLS_SHA256_USE_A64_CRYPTO_ONLY cannot be defined at the same
- * time as MBEDTLS_SHA256_USE_A64_CRYPTO_IF_PRESENT.
+ * \note This was previously known as MBEDTLS_SHA256_USE_A64_CRYPTO_ONLY.
+ * That name is deprecated, but may still be used as an alternative form for this
+ * option.
+ *
+ * \warning MBEDTLS_SHA256_USE_ARMV8_A_CRYPTO_ONLY cannot be defined at the same
+ * time as MBEDTLS_SHA256_USE_ARMV8_A_CRYPTO_IF_PRESENT.
  *
  * Requires: MBEDTLS_SHA256_C.
  *
  * Module:  library/sha256.c
  *
- * Uncomment to have the library use the A64 SHA-256 crypto extensions
+ * Uncomment to have the library use the Armv8-A SHA-256 crypto extensions
  * unconditionally.
+ */
+//#define MBEDTLS_SHA256_USE_ARMV8_A_CRYPTO_ONLY
+
+/**
+ * \def MBEDTLS_SHA256_USE_A64_CRYPTO_ONLY
+ *
+ * \deprecated This is now known as MBEDTLS_SHA256_USE_ARMV8_A_CRYPTO_ONLY.
+ * This name is now deprecated, but may still be used as an alternative form for
+ * this option.
  */
 //#define MBEDTLS_SHA256_USE_A64_CRYPTO_ONLY
 
@@ -3393,7 +3489,7 @@
  * Uncomment to have the library check for the A64 SHA-512 crypto extensions
  * and use them if available.
  */
-//#define MBEDTLS_SHA512_USE_A64_CRYPTO_IF_PRESENT
+// #define MBEDTLS_SHA512_USE_A64_CRYPTO_IF_PRESENT
 
 /**
  * \def MBEDTLS_SHA512_USE_A64_CRYPTO_ONLY
@@ -3522,7 +3618,7 @@
  *
  * Enable this layer to allow use of mutexes within Mbed TLS
  */
-//#define MBEDTLS_THREADING_C
+// #define MBEDTLS_THREADING_C
 
 /**
  * \def MBEDTLS_TIMING_C
@@ -3546,7 +3642,7 @@
  *
  * Module:  library/timing.c
  */
-//#define MBEDTLS_TIMING_C
+// #define MBEDTLS_TIMING_C
 
 /**
  * \def MBEDTLS_VERSION_C
@@ -4066,36 +4162,35 @@
  * \def MBEDTLS_SSL_MAX_EARLY_DATA_SIZE
  *
  * The default maximum amount of 0-RTT data. See the documentation of
- * \c mbedtls_ssl_tls13_conf_max_early_data_size() for more information.
+ * \c mbedtls_ssl_conf_max_early_data_size() for more information.
  *
  * It must be positive and smaller than UINT32_MAX.
  *
  * If MBEDTLS_SSL_EARLY_DATA is not defined, this default value does not
  * have any impact on the build.
- *
- * This feature is experimental, not completed and thus not ready for
- * production.
- *
  */
 //#define MBEDTLS_SSL_MAX_EARLY_DATA_SIZE        1024
 
 /**
  * \def MBEDTLS_SSL_TLS1_3_TICKET_AGE_TOLERANCE
  *
- * Maximum time difference in milliseconds tolerated between the age of a
- * ticket from the server and client point of view.
- * From the client point of view, the age of a ticket is the time difference
- * between the time when the client proposes to the server to use the ticket
- * (time of writing of the Pre-Shared Key Extension including the ticket) and
- * the time the client received the ticket from the server.
- * From the server point of view, the age of a ticket is the time difference
- * between the time when the server receives a proposition from the client
- * to use the ticket and the time when the ticket was created by the server.
- * The server age is expected to be always greater than the client one and
- * MBEDTLS_SSL_TLS1_3_TICKET_AGE_TOLERANCE defines the
- * maximum difference tolerated for the server to accept the ticket.
- * This is not used in TLS 1.2.
+ * Maximum allowed ticket age difference in milliseconds tolerated between
+ * server and client. Default value is 6000. This is not used in TLS 1.2.
  *
+ * - The client ticket age is the time difference between the time when the
+ *   client proposes to the server to use the ticket and the time the client
+ *   received the ticket from the server.
+ * - The server ticket age is the time difference between the time when the
+ *   server receives a proposition from the client to use the ticket and the
+ *   time when the ticket was created by the server.
+ *
+ * The ages might be different due to the client and server clocks not running
+ * at the same pace. The typical accuracy of an RTC crystal is ±100 to ±20 parts
+ * per million (360 to 72 milliseconds per hour). Default tolerance window is
+ * 6s, thus in the worst case clients and servers must sync up their system time
+ * every 6000/360/2~=8 hours.
+ *
+ * See section 8.3 of the TLS 1.3 specification(RFC 8446) for more information.
  */
 //#define MBEDTLS_SSL_TLS1_3_TICKET_AGE_TOLERANCE 6000
 
