@@ -13,6 +13,7 @@
 
 #include "mbedtls/pk.h"
 
+#undef MBEDTLS_PK_HAVE_ECC_KEYS
 #if defined(MBEDTLS_PK_HAVE_ECC_KEYS)
 #include "mbedtls/ecp.h"
 #endif
@@ -44,7 +45,7 @@
 #define PEM_BEGIN_ENCRYPTED_PRIVATE_KEY_PKCS8 "-----BEGIN ENCRYPTED PRIVATE KEY-----"
 #define PEM_END_ENCRYPTED_PRIVATE_KEY_PKCS8   "-----END ENCRYPTED PRIVATE KEY-----"
 
-#if defined(MBEDTLS_PK_HAVE_ECC_KEYS) && !defined(MBEDTLS_PK_USE_PSA_EC_DATA)
+#if !defined(MBEDTLS_PK_USE_PSA_EC_DATA)
 /**
  * Public function mbedtls_pk_ec() can be used to get direct access to the
  * wrapped ecp_keypair structure pointed to the pk_ctx. However this is not
@@ -80,9 +81,8 @@ static inline mbedtls_ecp_keypair *mbedtls_pk_ec_rw(const mbedtls_pk_context pk)
             return NULL;
     }
 }
-#endif /* MBEDTLS_PK_HAVE_ECC_KEYS && !MBEDTLS_PK_USE_PSA_EC_DATA */
+#endif /* !MBEDTLS_PK_USE_PSA_EC_DATA */
 
-#if defined(MBEDTLS_PK_HAVE_ECC_KEYS)
 static inline mbedtls_ecp_group_id mbedtls_pk_get_ec_group_id(const mbedtls_pk_context *pk)
 {
     mbedtls_ecp_group_id id;
@@ -106,13 +106,14 @@ static inline mbedtls_ecp_group_id mbedtls_pk_get_ec_group_id(const mbedtls_pk_c
 #if defined(MBEDTLS_PK_USE_PSA_EC_DATA)
         id = mbedtls_ecc_group_from_psa(pk->ec_family, pk->ec_bits);
 #else /* MBEDTLS_PK_USE_PSA_EC_DATA */
-        id = mbedtls_pk_ec_ro(*pk)->grp.id;
+        id = 0;
 #endif /* MBEDTLS_PK_USE_PSA_EC_DATA */
     }
 
     return id;
 }
 
+#if defined(MBEDTLS_PK_HAVE_ECC_KEYS)
 /* Helper for Montgomery curves */
 #if defined(MBEDTLS_ECP_HAVE_CURVE25519) || defined(MBEDTLS_ECP_HAVE_CURVE448)
 #define MBEDTLS_PK_HAVE_RFC8410_CURVES
