@@ -2,6 +2,11 @@
 #
 # Copyright (C) 2024 Linaro Ltd.
 
+ccflags-y += -I$(srctree)/lib/lwip/include -I$(srctree)/lib/lwip/u-boot
+ccflags-$(CONFIG_MBEDTLS_LIB_TLS) += -I$(srctree)/lib/mbedtls \
+	-I$(srctree)/lib/mbedtls/port \
+	-I$(srctree)/lib/mbedtls/external/mbedtls/include
+
 obj-y += \
 	lwip/src/api/api_lib.o \
 	lwip/src/api/api_msg.o \
