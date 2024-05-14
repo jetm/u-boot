@@ -1,8 +1,3 @@
-#undef CHAR_BIT
-#define CHAR_BIT 8
-#undef U32_MAX
-#define U32_MAX 0xFFFFFFFF
-
 /**
  * \file mbedtls_config.h
  *
@@ -4126,4 +4121,11 @@
 /* X509 options */
 //#define MBEDTLS_X509_MAX_INTERMEDIATE_CA   8   /**< Maximum number of intermediate CAs in a verification chain. */
 //#define MBEDTLS_X509_MAX_FILE_PATH_LEN     512 /**< Maximum length of a path/filename string in bytes including the null terminator character ('\0'). */
+
+#undef CHAR_BIT
+#define CHAR_BIT 8
+#undef U32_MAX
+#define U32_MAX 0xFFFFFFFF
+#undef MBEDTLS_PK_HAVE_ECC_KEYS
+
 /** \} name SECTION: Module configuration options */
