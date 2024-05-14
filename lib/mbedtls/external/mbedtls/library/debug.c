@@ -78,7 +78,6 @@ void mbedtls_debug_print_msg(const mbedtls_ssl_context *ssl, int level,
             ret = DEBUG_BUF_SIZE - 2;
         }
     }
-    str[ret]     = '\n';
     str[ret + 1] = '\0';
 
     debug_send_line(ssl, level, file, line, str);
@@ -106,7 +105,7 @@ void mbedtls_debug_print_ret(const mbedtls_ssl_context *ssl, int level,
         return;
     }
 
-    mbedtls_snprintf(str, sizeof(str), "%s() returned %d (-0x%04x)\n",
+    mbedtls_snprintf(str, sizeof(str), "%s() returned %d (-0x%04x)",
                      text, ret, (unsigned int) -ret);
 
     debug_send_line(ssl, level, file, line, str);
@@ -127,7 +126,7 @@ void mbedtls_debug_print_buf(const mbedtls_ssl_context *ssl, int level,
         return;
     }
 
-    mbedtls_snprintf(str + idx, sizeof(str) - idx, "dumping '%s' (%u bytes)\n",
+    mbedtls_snprintf(str + idx, sizeof(str) - idx, "dumping '%s' (%u bytes)",
                      text, (unsigned int) len);
 
     debug_send_line(ssl, level, file, line, str);
@@ -140,7 +139,7 @@ void mbedtls_debug_print_buf(const mbedtls_ssl_context *ssl, int level,
 
         if (i % 16 == 0) {
             if (i > 0) {
-                mbedtls_snprintf(str + idx, sizeof(str) - idx, "  %s\n", txt);
+                mbedtls_snprintf(str + idx, sizeof(str) - idx, "  %s", txt);
                 debug_send_line(ssl, level, file, line, str);
 
                 idx = 0;
@@ -162,7 +161,7 @@ void mbedtls_debug_print_buf(const mbedtls_ssl_context *ssl, int level,
             idx += mbedtls_snprintf(str + idx, sizeof(str) - idx, "   ");
         }
 
-        mbedtls_snprintf(str + idx, sizeof(str) - idx, "  %s\n", txt);
+        mbedtls_snprintf(str + idx, sizeof(str) - idx, "  %s", txt);
         debug_send_line(ssl, level, file, line, str);
     }
 }
@@ -280,7 +279,7 @@ void mbedtls_debug_print_mpi(const mbedtls_ssl_context *ssl, int level,
 
     bitlen = mbedtls_mpi_bitlen(X);
 
-    mbedtls_snprintf(str, sizeof(str), "value of '%s' (%u bits) is:\n",
+    mbedtls_snprintf(str, sizeof(str), "value of '%s' (%u bits) is:",
                      text, (unsigned) bitlen);
     debug_send_line(ssl, level, file, line, str);
 
@@ -298,7 +297,7 @@ void mbedtls_debug_print_mpi(const mbedtls_ssl_context *ssl, int level,
             idx += 3;
             /* Wrap lines after 16 octets that each take 3 columns */
             if (idx >= 3 * 16) {
-                mbedtls_snprintf(str + idx, sizeof(str) - idx, "\n");
+                mbedtls_snprintf(str + idx, sizeof(str) - idx, "");
                 debug_send_line(ssl, level, file, line, str);
                 idx = 0;
             }
@@ -306,7 +305,7 @@ void mbedtls_debug_print_mpi(const mbedtls_ssl_context *ssl, int level,
     }
 
     if (idx != 0) {
-        mbedtls_snprintf(str + idx, sizeof(str) - idx, "\n");
+        mbedtls_snprintf(str + idx, sizeof(str) - idx, "");
         debug_send_line(ssl, level, file, line, str);
     }
 }
@@ -399,7 +398,7 @@ void mbedtls_debug_print_crt(const mbedtls_ssl_context *ssl, int level,
     while (crt != NULL) {
         char buf[1024];
 
-        mbedtls_snprintf(str, sizeof(str), "%s #%d:\n", text, ++i);
+        mbedtls_snprintf(str, sizeof(str), "%s #%d:", text, ++i);
         debug_send_line(ssl, level, file, line, str);
 
         mbedtls_x509_crt_info(buf, sizeof(buf) - 1, "", crt);
