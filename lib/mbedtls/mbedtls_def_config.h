@@ -2949,9 +2949,7 @@
  *            it, and considering stronger message digests instead.
  *
  */
-#if CONFIG_IS_ENABLED(MD5)
 #define MBEDTLS_MD5_C
-#endif
 
 /**
  * \def MBEDTLS_MEMORY_BUFFER_ALLOC_C
@@ -3299,9 +3297,7 @@
  *            on it, and considering stronger message digests instead.
  *
  */
-#if CONFIG_IS_ENABLED(SHA1)
 #define MBEDTLS_SHA1_C
-#endif
 
 /**
  * \def MBEDTLS_SHA224_C
@@ -3331,9 +3327,7 @@
  * This module adds support for SHA-256.
  * This module is required for the SSL/TLS 1.2 PRF function.
  */
-#if CONFIG_IS_ENABLED(SHA256)
 #define MBEDTLS_SHA256_C
-#endif
 
 /**
  * \def MBEDTLS_SHA256_USE_ARMV8_A_CRYPTO_IF_PRESENT
@@ -3431,9 +3425,7 @@
  *
  * Comment to disable SHA-384
  */
-#if CONFIG_IS_ENABLED(SHA384)
 #define MBEDTLS_SHA384_C
-#endif
 
 /**
  * \def MBEDTLS_SHA512_C
@@ -3448,9 +3440,7 @@
  *
  * This module adds support for SHA-512.
  */
-#if CONFIG_IS_ENABLED(SHA512)
 #define MBEDTLS_SHA512_C
-#endif
 
 /**
  * \def MBEDTLS_SHA3_C
