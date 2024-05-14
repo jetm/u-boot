@@ -2414,6 +2414,28 @@
 //#define MBEDTLS_BLOCK_CIPHER_NO_DECRYPT
 
 /**
+ * \def MBEDTLS_BLOCK_CIPHER_NO_DECRYPT
+ *
+ * Remove decryption operation for AES, ARIA and Camellia block cipher.
+ *
+ * \note  This feature is incompatible with insecure block cipher,
+ *        MBEDTLS_DES_C, and cipher modes which always require decryption
+ *        operation, MBEDTLS_CIPHER_MODE_CBC, MBEDTLS_CIPHER_MODE_XTS and
+ *        MBEDTLS_NIST_KW_C. When #MBEDTLS_PSA_CRYPTO_CONFIG is enabled,
+ *        this feature is incompatible with following supported PSA equivalence,
+ *        PSA_WANT_ALG_ECB_NO_PADDING, PSA_WANT_ALG_CBC_NO_PADDING,
+ *        PSA_WANT_ALG_CBC_PKCS7 and PSA_WANT_KEY_TYPE_DES.
+ *
+ * Module:  library/aes.c
+ *          library/aesce.c
+ *          library/aesni.c
+ *          library/aria.c
+ *          library/camellia.c
+ *          library/cipher.c
+ */
+//#define MBEDTLS_BLOCK_CIPHER_NO_DECRYPT
+
+/**
  * \def MBEDTLS_BIGNUM_C
  *
  * Enable the multi-precision integer library.
@@ -2812,6 +2834,22 @@
  * requisites are enabled as well.
  */
 #define MBEDTLS_GCM_C
+
+/**
+ * \def MBEDTLS_GCM_LARGE_TABLE
+ *
+ * Enable large pre-computed tables for  Galois/Counter Mode (GCM).
+ * Can significantly increase throughput on systems without GCM hardware
+ * acceleration (e.g., AESNI, AESCE).
+ *
+ * The mbedtls_gcm_context size will increase by 3840 bytes.
+ * The code size will increase by roughly 344 bytes.
+ *
+ * Module:  library/gcm.c
+ *
+ * Requires: MBEDTLS_GCM_C
+ */
+#define MBEDTLS_GCM_LARGE_TABLE
 
 /**
  * \def MBEDTLS_GCM_LARGE_TABLE
