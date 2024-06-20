@@ -44,18 +44,18 @@ static int parse_url(char *url, char *host, u16 *port, char **path)
 {
 	char *p, *pp;
 	long lport;
-    bool https = false;
+	bool https = false;
 
-    p = strstr(url, HTTPS_SCHEME);
-    if (!p) {
-        p = strstr(url, HTTP_SCHEME);
-        p += strlen(HTTP_SCHEME);
-        if (!p)
-           return -ENOENT;
-    } else {
-        p += strlen(HTTPS_SCHEME);
-        https = true;
-    }
+	p = strstr(url, HTTPS_SCHEME);
+	if (!p) {
+		p = strstr(url, HTTP_SCHEME);
+		p += strlen(HTTP_SCHEME);
+		if (!p)
+			return -ENOENT;
+	} else {
+		p += strlen(HTTPS_SCHEME);
+		https = true;
+	}
 
 	/* Parse hostname */
 	pp = strchr(p, ':');
@@ -80,7 +80,7 @@ static int parse_url(char *url, char *host, u16 *port, char **path)
 			return -EINVAL;
 		*port = (u16)lport;
 	} else if (https) {
-        *port = HTTPS_PORT_DEFAULT;
+		*port = HTTPS_PORT_DEFAULT;
 	} else {
 		*port = HTTP_PORT_DEFAULT;
 	}
@@ -93,12 +93,12 @@ static int parse_url(char *url, char *host, u16 *port, char **path)
 
 bool wget_validate_uri(char *uri)
 {
-    if (strstr(uri, HTTP_SCHEME) || strstr(uri, HTTPS_SCHEME)) {
-        return true;
-    }
+	if (strstr(uri, HTTP_SCHEME) || strstr(uri, HTTPS_SCHEME)) {
+		return true;
+	}
 
-    log_err("only http:// and https:// are supported\n");
-    return false;
+	log_err("only http:// and https:// are supported\n");
+	return false;
 }
 
 static err_t httpc_recv_cb(void *arg, struct altcp_pcb *pcb, struct pbuf *pbuf,
@@ -181,17 +181,17 @@ static int wget_loop(struct udevice *udev, ulong dst_addr, char *uri)
 	conn.result_fn = httpc_result_cb;
 	ctx.start_time = get_timer(0);
 
-    if (port == HTTPS_PORT_DEFAULT) {
-        altcp_allocator_t tls_allocator;
+	if (port == HTTPS_PORT_DEFAULT) {
+		altcp_allocator_t tls_allocator;
 
-        tls_allocator.alloc = &altcp_tls_alloc;
-        tls_allocator.arg = altcp_tls_create_config_client(NULL, 0);
+		tls_allocator.alloc = &altcp_tls_alloc;
+		tls_allocator.arg = altcp_tls_create_config_client(NULL, 0);
 
-        if (!tls_allocator.arg)
-            printf("error: tls_allocator arg is null\n");
+		if (!tls_allocator.arg)
+			printf("error: tls_allocator arg is null\n");
 
-        conn.altcp_allocator = &tls_allocator;
-    }
+		conn.altcp_allocator = &tls_allocator;
+	}
 
 	if (httpc_get_file_dns(server_name, port, path, &conn, httpc_recv_cb,
 			       &ctx, &state)) {
@@ -244,75 +244,4 @@ int do_wget(struct cmd_tbl *cmdtp, int flag, int argc, char * const argv[])
 		return CMD_RET_FAILURE;
 
 	return CMD_RET_SUCCESS;
-}
-
-/**
- * wget_validate_uri() - validate the uri for wget
- *
- * @uri:	uri string
- *
- * This function follows the current U-Boot wget implementation.
- * scheme: only "http:" is supported
- * authority:
- *   - user information: not supported
- *   - host: supported
- *   - port: not supported(always use the default port)
- *
- * Uri is expected to be correctly percent encoded.
- * This is the minimum check, control codes(0x1-0x19, 0x7F, except '\0')
- * and space character(0x20) are not allowed.
- *
- * TODO: stricter uri conformance check
- *
- * Return:	true on success, false on failure
- */
-bool wget_validate_uri(char *uri)
-{
-	char c;
-	bool ret = true;
-	char *str_copy, *s, *authority;
-
-	for (c = 0x1; c < 0x21; c++) {
-		if (strchr(uri, c)) {
-			log_err("invalid character is used\n");
-			return false;
-		}
-	}
-	if (strchr(uri, 0x7f)) {
-		log_err("invalid character is used\n");
-		return false;
-	}
-
-	if (strncmp(uri, "http://", 7)) {
-		log_err("only http:// is supported\n");
-		return false;
-	}
-	str_copy = strdup(uri);
-	if (!str_copy)
-		return false;
-
-	s = str_copy + strlen("http://");
-	authority = strsep(&s, "/");
-	if (!s) {
-		log_err("invalid uri, no file path\n");
-		ret = false;
-		goto out;
-	}
-	s = strchr(authority, '@');
-	if (s) {
-		log_err("user information is not supported\n");
-		ret = false;
-		goto out;
-	}
-	s = strchr(authority, ':');
-	if (s) {
-		log_err("user defined port is not supported\n");
-		ret = false;
-		goto out;
-	}
-
-out:
-	free(str_copy);
-
-	return ret;
 }
