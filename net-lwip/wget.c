@@ -8,6 +8,7 @@
 #include <lwip/apps/http_client.h>
 #include <lwip/timeouts.h>
 #include <net.h>
+#include <stdio.h>
 #include <time.h>
 #include "lwip/altcp_tls.h"
 #include "mbedtls/debug.h"
@@ -19,11 +20,6 @@
 #define HTTPS_SCHEME "https://"
 
 #define PROGRESS_PRINT_STEP_BYTES (100 * 1024)
-
-static ulong daddr;
-static ulong saved_daddr;
-static ulong size;
-static ulong prevsize;
 
 enum done_state {
         NOT_DONE = 0,
@@ -172,6 +168,8 @@ static int wget_loop(struct udevice *udev, ulong dst_addr, char *uri)
 
 	if (parse_url(uri, server_name, &port, &path))
 		return CMD_RET_USAGE;
+
+	printf("server %s, port %d, path %s\n", server_name, port, path);
 
 	netif = net_lwip_new_netif(udev);
 	if (!netif)
