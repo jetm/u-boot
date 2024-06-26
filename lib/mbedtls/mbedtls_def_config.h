@@ -397,7 +397,7 @@
 //#define MBEDTLS_SHA256_ALT
 //#define MBEDTLS_SHA512_ALT
 
-/*
+/**
  * When replacing the elliptic curve module, please consider, that it is
  * implemented with two .c files:
  *      - ecp.c
@@ -599,7 +599,7 @@
  */
 //#define MBEDTLS_AES_ONLY_128_BIT_KEY_LENGTH
 
-/*
+/**
  * Disable plain C implementation for AES.
  *
  * When the plain C implementation is enabled, and an implementation using a
@@ -878,7 +878,7 @@
  *      MBEDTLS_TLS_PSK_WITH_CAMELLIA_128_GCM_SHA256
  *      MBEDTLS_TLS_PSK_WITH_CAMELLIA_128_CBC_SHA256
  */
-// #define MBEDTLS_KEY_EXCHANGE_PSK_ENABLED
+#define MBEDTLS_KEY_EXCHANGE_PSK_ENABLED
 
 /**
  * \def MBEDTLS_KEY_EXCHANGE_DHE_PSK_ENABLED
@@ -907,7 +907,7 @@
  *             See dhm.h for more details.
  *
  */
-// #define MBEDTLS_KEY_EXCHANGE_DHE_PSK_ENABLED
+#define MBEDTLS_KEY_EXCHANGE_DHE_PSK_ENABLED
 
 /**
  * \def MBEDTLS_KEY_EXCHANGE_ECDHE_PSK_ENABLED
@@ -948,7 +948,7 @@
  *      MBEDTLS_TLS_RSA_PSK_WITH_CAMELLIA_128_GCM_SHA256
  *      MBEDTLS_TLS_RSA_PSK_WITH_CAMELLIA_128_CBC_SHA256
  */
-// #define MBEDTLS_KEY_EXCHANGE_RSA_PSK_ENABLED
+#define MBEDTLS_KEY_EXCHANGE_RSA_PSK_ENABLED
 
 /**
  * \def MBEDTLS_KEY_EXCHANGE_RSA_ENABLED
@@ -4214,6 +4214,5 @@
 #define CHAR_BIT 8
 #undef U32_MAX
 #define U32_MAX 0xFFFFFFFF
-#undef MBEDTLS_PK_HAVE_ECC_KEYS
 
 /** \} name SECTION: Module configuration options */
