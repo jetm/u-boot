@@ -126,6 +126,7 @@ const mbedtls_pk_info_t *mbedtls_pk_info_from_type(mbedtls_pk_type_t pk_type)
 #endif /* MBEDTLS_PK_HAVE_ECC_KEYS */
         /* MBEDTLS_PK_RSA_ALT omitted on purpose */
         default:
+            // printf("%s:%d mbedtls_pk_info_from_type %d\n", __FILE__, __LINE__, pk_type);
             return NULL;
     }
 }

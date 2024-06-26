@@ -5,7 +5,9 @@
 #ifndef LWIP_UBOOT_LWIPOPTS_H
 #define LWIP_UBOOT_LWIPOPTS_H
 
+#define CONFIG_LWIP_DEBUG 1
 #if defined(CONFIG_LWIP_DEBUG)
+#include <malloc.h>
 #define LWIP_DEBUG 1
 #define LWIP_DBG_MIN_LEVEL              LWIP_DBG_LEVEL_ALL
 #define LWIP_DBG_TYPES_ON               LWIP_DBG_ON
