@@ -10,6 +10,8 @@
 #ifndef MBEDTLS_DEBUG_H
 #define MBEDTLS_DEBUG_H
 
+#include <vsprintf.h>
+
 #include "mbedtls/build_info.h"
 
 #include "mbedtls/ssl.h"

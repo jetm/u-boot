@@ -532,6 +532,7 @@ int mbedtls_pk_parse_subpubkey(unsigned char **p, const unsigned char *end,
     end = *p + len;
 
     if ((ret = pk_get_pk_alg(p, end, &pk_alg, &alg_params, &ec_grp_id)) != 0) {
+        printf("%s:%d pk_get_pk_alg %x\n", __FILE__, __LINE__, ret);
         return ret;
     }
 
@@ -545,6 +546,7 @@ int mbedtls_pk_parse_subpubkey(unsigned char **p, const unsigned char *end,
     }
 
     if ((pk_info = mbedtls_pk_info_from_type(pk_alg)) == NULL) {
+        printf("%s:%d mbedtls_pk_info_from_type %x\n", __FILE__, __LINE__, MBEDTLS_ERR_PK_UNKNOWN_PK_ALG);
         return MBEDTLS_ERR_PK_UNKNOWN_PK_ALG;
     }
 

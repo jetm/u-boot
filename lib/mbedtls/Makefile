@@ -30,7 +30,38 @@ x509_mbedtls-$(CONFIG_$(SPL_)PKCS7_MESSAGE_PARSER_MBEDTLS) += pkcs7_parser.o
 x509_mbedtls-$(CONFIG_$(SPL_)MSCODE_PARSER_MBEDTLS) += mscode_parser.o
 x509_mbedtls-$(CONFIG_$(SPL_)RSA_PUBLIC_KEY_PARSER_MBEDTLS) += rsa_helper.o
 
-# MbedTLS crypto library
+# MbedTLS crypto libary
+	# $(MBEDTLS_LIB_DIR)/md.o \
+	# $(MBEDTLS_LIB_DIR)/aesni.o \
+	# $(MBEDTLS_LIB_DIR)/aesce.o \
+	# $(MBEDTLS_LIB_DIR)/asn1parse.o \
+	# $(MBEDTLS_LIB_DIR)/asn1write.o \
+	# $(MBEDTLS_LIB_DIR)/bignum.o \
+	# $(MBEDTLS_LIB_DIR)/bignum_core.o \
+	# $(MBEDTLS_LIB_DIR)/bignum_mod.o \
+	# $(MBEDTLS_LIB_DIR)/bignum_mod_raw.o \
+	# $(MBEDTLS_LIB_DIR)/cmac.o \
+	# $(MBEDTLS_LIB_DIR)/hkdf.o \
+	# $(MBEDTLS_LIB_DIR)/hmac_drbg.o \
+	# $(MBEDTLS_LIB_DIR)/lmots.o \
+	# $(MBEDTLS_LIB_DIR)/lms.o \
+	# $(MBEDTLS_LIB_DIR)/memory_buffer_alloc.o \
+	# $(MBEDTLS_LIB_DIR)/oid.o \
+	# $(MBEDTLS_LIB_DIR)/padlock.o \
+	# $(MBEDTLS_LIB_DIR)/pk.o \
+	# $(MBEDTLS_LIB_DIR)/pk_wrap.o \
+	# $(MBEDTLS_LIB_DIR)/pkcs12.o \
+	# $(MBEDTLS_LIB_DIR)/pkcs5.o \
+	# $(MBEDTLS_LIB_DIR)/pkparse.o \
+	# $(MBEDTLS_LIB_DIR)/pkwrite.o \
+	# $(MBEDTLS_LIB_DIR)/platform.o \
+	# $(MBEDTLS_LIB_DIR)/rsa.o \
+	# $(MBEDTLS_LIB_DIR)/rsa_alt_helpers.o \
+	# $(MBEDTLS_LIB_DIR)/threading.o \
+	# $(MBEDTLS_LIB_DIR)/timing.o \
+	# $(MBEDTLS_LIB_DIR)/version.o \
+	# $(MBEDTLS_LIB_DIR)/version_features.o \
+
 obj-$(CONFIG_MBEDTLS_LIB_CRYPTO) += mbedtls_lib_crypto.o
 mbedtls_lib_crypto-y += \
 	$(MBEDTLS_LIB_DIR)/platform_util.o \

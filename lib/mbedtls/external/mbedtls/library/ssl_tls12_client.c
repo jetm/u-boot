@@ -17,6 +17,7 @@
 #include "debug_internal.h"
 #include "mbedtls/error.h"
 #include "mbedtls/constant_time.h"
+#include "pk_internal.h"
 
 #if defined(MBEDTLS_USE_PSA_CRYPTO)
 #include "psa_util_internal.h"
