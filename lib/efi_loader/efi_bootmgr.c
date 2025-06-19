@@ -407,7 +407,7 @@ static efi_status_t efi_bootmgr_release_uridp(struct uridp_context *ctx)
 	if (!ctx)
 		return ret;
 
-	/* cleanup for iso or img image */
+	/* cleanup for iso, img, or wic image */
 	if (ctx->ramdisk_blk_dev) {
 		ret = efi_add_memory_map(ctx->image_addr, ctx->image_size,
 					 EFI_CONVENTIONAL_MEMORY);
@@ -516,13 +516,14 @@ static efi_status_t try_load_from_uri_path(struct efi_device_path_uri *uridp,
 	image_size = ALIGN(image_size, SZ_2M);
 
 	/*
-	 * If the file extension is ".iso" or ".img", mount it and try to load
+	 * If the file extension is ".iso", ".img", or ".wic", mount it and try to load
 	 * the default file.
 	 * If the file is PE-COFF image, load the downloaded file.
 	 */
 	uri_len = strlen(uridp->uri);
 	if (!strncmp(&uridp->uri[uri_len - 4], ".iso", 4) ||
-	    !strncmp(&uridp->uri[uri_len - 4], ".img", 4)) {
+	    !strncmp(&uridp->uri[uri_len - 4], ".img", 4) ||
+	    !strncmp(&uridp->uri[uri_len - 4], ".wic", 4)) {
 		ret = prepare_loaded_image(lo_label, image_addr, image_size,
 					   &loaded_dp, &blk);
 		if (ret != EFI_SUCCESS)
