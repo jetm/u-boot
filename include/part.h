@@ -471,9 +471,6 @@ ulong disk_blk_erase(struct udevice *dev, lbaint_t start, lbaint_t blkcnt);
 #define part_get_info_ptr(x)	x
 #endif
 
-static inline struct part_driver *part_driver_lookup_type(struct blk_desc *desc)
-{ return NULL; }
-
 /**
  * struct part_driver - partition driver
  */
@@ -751,6 +748,9 @@ struct part_driver *part_driver_lookup_type(struct blk_desc *desc);
 #else
 static inline int part_driver_get_count(void)
 { return 0; }
+
+static inline struct part_driver *part_driver_lookup_type(struct blk_desc *desc)
+{ return NULL; }
 
 static inline struct part_driver *part_driver_get_first(void)
 { return NULL; }
